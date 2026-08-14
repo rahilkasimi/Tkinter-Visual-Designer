@@ -1,6 +1,6 @@
 # Tkinter Visual GUI Designer
 
-A full-featured drag-and-drop GUI builder and Python code generator built using standard Tkinter. This application allows developers to visually design user interfaces, modify widget properties, manage container hierarchies, and generate clean object-oriented Python code.
+A full-featured drag-and-drop GUI builder and Python code generator built using standard Tkinter. This application allows developers to visually design user interfaces, modify widget properties, manage container hierarchies, and generate clean object-oriented Python code. This application is still under development and it is not a finished product.
 
 ---
 
