@@ -454,6 +454,13 @@ class CodeGenerator:
                 props.pop("textvariable", None)
             def_val = props.pop("default_value", None)
 
+            # For Label, derive anchor from justify for proper alignment
+            if elem.elem_type == "Label" and "justify" in props:
+                justify = props["justify"]
+                anchor_map = {"left": "w", "center": "center", "right": "e"}
+                if "anchor" not in props:
+                    props["anchor"] = anchor_map.get(justify, "center")
+
             prop_strs = []
             for k, v in props.items():
                 if k == "variable" and v:
@@ -616,6 +623,13 @@ if __name__ == "__main__":
         widget_class = ELEMENT_TYPES[elem.elem_type]["widget"]
         props = copy.deepcopy(elem.props)
 
+        # For Label, derive anchor from justify for proper alignment
+        if elem.elem_type == "Label" and "justify" in props:
+            justify = props["justify"]
+            anchor_map = {"left": "w", "center": "center", "right": "e"}
+            if "anchor" not in props:
+                props["anchor"] = anchor_map.get(justify, "center")
+        
         # Determine if this element has a command binding
         bindings = []
         for e in all_elements:
@@ -813,8 +827,12 @@ class CanvasRenderer:
 
     def _draw_label(self, elem, x, y, w, h, bg, fg, font, outline, outline_w):
         self._draw_flat_rect(elem, x, y, w, h, bg, outline, outline_w)
-        self._render_text_on_canvas(elem, x, y, w, h, elem.display_label, fg, font)
-
+        justify = elem.props.get("justify", "center")
+        # map justify values to tkinter anchors
+        anchor_map = {"left": "w", "center": "center", "right": "e"}
+        anchor = anchor_map.get(justify, "center")
+        self._render_text_on_canvas(elem, x, y, w, h, elem.display_label, fg, font, anchor=anchor)
+                                    
     def _draw_entry(self, elem, x, y, w, h, bg, fg, font, outline, outline_w):
         self._draw_sunken_rect(elem, x, y, w, h, bg, outline, outline_w)
         text = elem.props.get("textvariable") or elem.display_label
@@ -1005,13 +1023,20 @@ class CanvasRenderer:
     def _render_text_on_canvas(self, elem, x, y, w, h, text, color, font, anchor="center"):
         if anchor == "center":
             elem.text_id = self.canvas.create_text(
-                x + w//2, y + h//2, text=text, fill=color, font=font, tags=("element", f"elem_{elem.elem_id}")
+                x + w//2, y + h//2, text=text, fill=color, font=font,
+                tags=("element", f"elem_{elem.elem_id}")
             )
         elif anchor == "w":
             elem.text_id = self.canvas.create_text(
-                x+2, y + h//2, text=text, fill=color, font=font, anchor="w", tags=("element", f"elem_{elem.elem_id}")
+                x + 2, y + h//2, text=text, fill=color, font=font, anchor="w",
+                tags=("element", f"elem_{elem.elem_id}")
             )
-
+        elif anchor == "e":   # <-- NEW: right alignment
+            elem.text_id = self.canvas.create_text(
+                x + w - 2, y + h//2, text=text, fill=color, font=font, anchor="e",
+                tags=("element", f"elem_{elem.elem_id}")
+            )
+        
     def erase_element(self, elem: DesignElement) -> None:
         self.canvas.delete(f"elem_{elem.elem_id}")
         for hid in elem.handle_ids.values():
@@ -1053,7 +1078,7 @@ class GUIBuilderApp:
 
         self.CANVAS_W = 800
         self.CANVAS_H = 600
-        self.CANVAS_BG = "#FAFAFA"
+        self.CANVAS_BG = "#FFFFFF"
         
         self.canvas_imports = "import tkinter as tk\nfrom tkinter import ttk"
 
