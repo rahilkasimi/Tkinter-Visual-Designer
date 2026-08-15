@@ -33,17 +33,17 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "display": "🏷️ Label",
         "widget": "tk.Label",
         "default_size": (120, 30),
-        "defaults": {"text": "Label", "font": ("TkDefaultFont",), "fg": "black", "bg": "SystemButtonFace",
+        "defaults": {"text": "Label", "font": ("Segoe UI", 9), "fg": "#212121", "bg": "#F5F5F5",
                      "relief": "flat", "justify": "center"},
-        "tile_bg": "#E8F0FE", "tile_fg": "#1A237E",
+        "tile_bg": "#E3F2FD", "tile_fg": "#1565C0",
         "category": "Input",
     },
     "Entry": {
         "display": "✍️ Entry",
         "widget": "tk.Entry",
         "default_size": (160, 30),
-        "defaults": {"textvariable": "", "show": "", "width": 20, "font": ("TkDefaultFont",),
-                     "fg": "black", "bg": "white", "relief": "sunken", "justify": "left", "default_value": ""},
+        "defaults": {"textvariable": "", "show": "", "width": 20, "font": ("Segoe UI", 9),
+                     "fg": "#212121", "bg": "white", "relief": "sunken", "justify": "left", "default_value": ""},
         "tile_bg": "#FFFFFF", "tile_fg": "#212121",
         "category": "Input",
     },
@@ -51,18 +51,18 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "display": "🔘 Button",
         "widget": "tk.Button",
         "default_size": (100, 34),
-        "defaults": {"text": "Button", "font": ("TkDefaultFont",), "fg": "black", "bg": "SystemButtonFace",
-                     "relief": "raised", "command": ""},
-        "tile_bg": "#3F51B5", "tile_fg": "#FFFFFF",
+        "defaults": {"text": "Button", "font": ("Segoe UI", 9, "bold"), "fg": "#FFFFFF", "bg": "#1976D2",
+                     "relief": "flat", "command": ""},
+        "tile_bg": "#1976D2", "tile_fg": "#FFFFFF",
         "category": "Input",
     },
     "Radiobutton": {
         "display": "◉ Radiobutton",
         "widget": "tk.Radiobutton",
         "default_size": (130, 30),
-        "defaults": {"text": "Option", "variable": "", "value": 1, "font": ("TkDefaultFont",),
-                     "fg": "black", "bg": "SystemButtonFace", "relief": "flat"},
-        "tile_bg": "#F3E5F5", "tile_fg": "#4A148C",
+        "defaults": {"text": "Option", "variable": "", "value": 1, "font": ("Segoe UI", 9),
+                     "fg": "#212121", "bg": "#F5F5F5", "relief": "flat"},
+        "tile_bg": "#F3E5F5", "tile_fg": "#6A1B9A",
         "category": "Input",
     },
     "Checkbutton": {
@@ -70,8 +70,8 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "widget": "tk.Checkbutton",
         "default_size": (130, 30),
         "defaults": {"text": "Checkbox", "variable": "", "onvalue": 1, "offvalue": 0,
-                     "font": ("TkDefaultFont",), "fg": "black", "bg": "SystemButtonFace", "default_value": 0},
-        "tile_bg": "#F1F8E9", "tile_fg": "#1B5E20",
+                     "font": ("Segoe UI", 9), "fg": "#212121", "bg": "#F5F5F5", "default_value": 0},
+        "tile_bg": "#E8F5E9", "tile_fg": "#2E7D32",
         "category": "Input",
     },
     "Scale": {
@@ -79,9 +79,9 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "widget": "tk.Scale",
         "default_size": (180, 40),
         "defaults": {"from_": 0, "to": 100, "orient": "horizontal", "length": 150,
-                     "tickinterval": 0, "resolution": 1, "font": ("TkDefaultFont",),
-                     "fg": "black", "bg": "SystemButtonFace", "default_value": 0},
-        "tile_bg": "#FCE4EC", "tile_fg": "#880E4F",
+                     "tickinterval": 0, "resolution": 1, "font": ("Segoe UI", 9),
+                     "fg": "#212121", "bg": "#F5F5F5", "default_value": 0},
+        "tile_bg": "#FCE4EC", "tile_fg": "#AD1457",
         "category": "Input",
     },
     "Combobox": {
@@ -89,7 +89,7 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "widget": "ttk.Combobox",
         "default_size": (150, 30),
         "defaults": {"values": ["Option 1", "Option 2", "Option 3"], "state": "readonly",
-                     "font": ("TkDefaultFont",), "width": 18, "default_value": ""},
+                     "font": ("Segoe UI", 9), "width": 18, "default_value": ""},
         "tile_bg": "#FFF3E0", "tile_fg": "#E65100",
         "category": "Input",
     },
@@ -97,9 +97,9 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "display": "🔢 Spinbox",
         "widget": "tk.Spinbox",
         "default_size": (80, 30),
-        "defaults": {"from_": 0, "to": 100, "width": 5, "font": ("TkDefaultFont",),
-                     "fg": "black", "bg": "white", "relief": "sunken", "default_value": 0},
-        "tile_bg": "#FFF8E1", "tile_fg": "#FF6F00",
+        "defaults": {"from_": 0, "to": 100, "width": 5, "font": ("Segoe UI", 9),
+                     "fg": "#212121", "bg": "white", "relief": "sunken", "default_value": 0},
+        "tile_bg": "#FFF8E1", "tile_fg": "#E65100",
         "category": "Input",
     },
     "Listbox": {
@@ -107,7 +107,7 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "widget": "tk.Listbox",
         "default_size": (150, 80),
         "defaults": {"listvariable": "", "items": ["Item 1", "Item 2"], "height": 4, "width": 18,
-                     "font": ("TkDefaultFont",), "fg": "black", "bg": "white",
+                     "font": ("Segoe UI", 9), "fg": "#212121", "bg": "white",
                      "relief": "sunken", "selectmode": "single"},
         "tile_bg": "#E3F2FD", "tile_fg": "#0D47A1",
         "category": "Display",
@@ -116,8 +116,8 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "display": "📝 Text (Multiline)",
         "widget": "tk.Text",
         "default_size": (200, 90),
-        "defaults": {"height": 5, "width": 30, "font": ("TkDefaultFont",),
-                     "fg": "black", "bg": "white", "relief": "sunken", "wrap": "word"},
+        "defaults": {"height": 5, "width": 30, "font": ("Segoe UI", 9),
+                     "fg": "#212121", "bg": "white", "relief": "sunken", "wrap": "word"},
         "tile_bg": "#FFFDE7", "tile_fg": "#F57F17",
         "category": "Display",
     },
@@ -126,7 +126,7 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "widget": "tk.Canvas",
         "default_size": (200, 120),
         "defaults": {"width": 200, "height": 120, "bg": "white", "relief": "sunken", "bd": 2},
-        "tile_bg": "#FFF8E1", "tile_fg": "#FF6F00",
+        "tile_bg": "#FFF8E1", "tile_fg": "#F57F17",
         "category": "Display",
     },
     "Progressbar": {
@@ -141,7 +141,7 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "display": "↕️ Scrollbar",
         "widget": "tk.Scrollbar",
         "default_size": (20, 120),
-        "defaults": {"orient": "vertical", "width": 16, "bg": "SystemButtonFace"},
+        "defaults": {"orient": "vertical", "width": 16, "bg": "#E0E0E0"},
         "tile_bg": "#CFD8DC", "tile_fg": "#37474F",
         "category": "Display",
     },
@@ -149,7 +149,7 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "display": "🖼️ Frame (Container)",
         "widget": "tk.Frame",
         "default_size": (200, 120),
-        "defaults": {"relief": "groove", "bd": 2, "bg": "SystemButtonFace"},
+        "defaults": {"relief": "groove", "bd": 2, "bg": "#F5F5F5"},
         "tile_bg": "#ECEFF1", "tile_fg": "#263238",
         "category": "Containers",
     },
@@ -157,7 +157,7 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "display": "🗂️ LabelFrame",
         "widget": "tk.LabelFrame",
         "default_size": (200, 120),
-        "defaults": {"text": "LabelFrame", "relief": "groove", "bd": 2, "bg": "SystemButtonFace", "font": ("TkDefaultFont",)},
+        "defaults": {"text": "LabelFrame", "relief": "groove", "bd": 2, "bg": "#F5F5F5", "font": ("Segoe UI", 9)},
         "tile_bg": "#E0F2F1", "tile_fg": "#004D40",
         "category": "Containers",
     },
@@ -173,7 +173,7 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "display": "🪟 PanedWindow",
         "widget": "tk.PanedWindow",
         "default_size": (200, 120),
-        "defaults": {"orient": "horizontal", "bg": "SystemButtonFace", "sashrelief": "raised"},
+        "defaults": {"orient": "horizontal", "bg": "#F5F5F5", "sashrelief": "raised"},
         "tile_bg": "#D7CCC8", "tile_fg": "#4E342E",
         "category": "Containers",
     },
@@ -323,7 +323,6 @@ class DesignElement:
 
     @property
     def display_label(self) -> str:
-        # Fix: treat text=0 as a valid value, not as falsy
         text_val = self.props.get("text")
         if text_val is not None:
             label = str(text_val)
@@ -592,7 +591,7 @@ def main():
     root.title({json.dumps(window_title)})
     root.geometry({json.dumps(f"{window_size[0]}x{window_size[1]}")})
     root.configure(bg={json.dumps(canvas_bg)})
-    label = tk.Label(root, text="Add elements from the toolbox to begin!")
+    label = tk.Label(root, text="Add elements from the toolbox to begin!", font=("Segoe UI", 10))
     label.place(x=10, y=10)
     root.mainloop()
 
@@ -766,10 +765,11 @@ class CanvasRenderer:
 
     def draw_grid(self, width: int, height: int) -> None:
         self.canvas.delete("grid")
+        # Lighter grid for modern look
         for x in range(0, width + 1, 20):
-            self.canvas.create_line(x, 0, x, height, fill="#e0e0e0", tags="grid")
+            self.canvas.create_line(x, 0, x, height, fill="#E8E8E8", tags="grid")
         for y in range(0, height + 1, 20):
-            self.canvas.create_line(0, y, width, y, fill="#e0e0e0", tags="grid")
+            self.canvas.create_line(0, y, width, y, fill="#E8E8E8", tags="grid")
         self.canvas.tag_lower("grid")
 
     def draw_element(self, elem: DesignElement) -> None:
@@ -777,7 +777,7 @@ class CanvasRenderer:
         bg = self._get_valid_color(elem.props.get("bg"), ELEMENT_TYPES[elem.elem_type]["tile_bg"])
         fg = self._get_valid_color(elem.props.get("fg"), ELEMENT_TYPES[elem.elem_type]["tile_fg"])
         font = elem.props.get("font") or ("Segoe UI", 9)
-        outline = "#FF6B35" if elem.selected else "#AAAAAA"
+        outline = "#FF6B35" if elem.selected else "#B0BEC5"
         width_outline = 2 if elem.selected else 1
 
         self.erase_element(elem)
@@ -787,27 +787,29 @@ class CanvasRenderer:
 
         elem.handle_ids = {}
         if elem.selected:
+            # Selection handles: bright accent with subtle shadow effect
             for name, (hx, hy) in elem.handle_positions().items():
                 hid = self.canvas.create_rectangle(
                     hx - HANDLE_HALF, hy - HANDLE_HALF, hx + HANDLE_HALF, hy + HANDLE_HALF,
-                    fill="#FF6B35", outline="white", width=1,
+                    fill="#FF6B35", outline="#FFFFFF", width=2,
                     tags=("handle", f"handle_{elem.elem_id}_{name}")
                 )
                 elem.handle_ids[name] = hid
                 
             del_x, del_y = x + w + 15, y - 15
-            hid_bg = self.canvas.create_rectangle(del_x-8, del_y-8, del_x+8, del_y+8, fill="#E53935", outline="white", tags=("handle", f"del_{elem.elem_id}"))
+            # Delete button: red rounded rectangle (simulated)
+            hid_bg = self.canvas.create_rectangle(del_x-9, del_y-9, del_x+9, del_y+9, fill="#E53935", outline="#FFFFFF", width=2, tags=("handle", f"del_{elem.elem_id}"))
             hid_l1 = self.canvas.create_line(del_x-4, del_y-4, del_x+4, del_y+4, fill="white", width=2, tags=("handle", f"del_{elem.elem_id}"))
             hid_l2 = self.canvas.create_line(del_x-4, del_y+4, del_x+4, del_y-4, fill="white", width=2, tags=("handle", f"del_{elem.elem_id}"))
             elem.handle_ids["DEL"] = hid_bg
             elem.handle_ids["DEL_L1"] = hid_l1
             elem.handle_ids["DEL_L2"] = hid_l2
 
-        
-        id_lbl_bg = self.canvas.create_rectangle(x + w//2 - 15, y - 17, x + w//2 + 15, y - 3, fill="#FF6B35", outline="white", tags=("handle", f"id_{elem.elem_id}"))
-        id_lbl = self.canvas.create_text(x + w//2, y - 12, text=f"ID:{elem.elem_id}", fill="white", font=("Segoe UI", 8, "bold"), tags=("handle", f"id_{elem.elem_id}"))
-        elem.handle_ids["ID_BG"] = id_lbl_bg
-        elem.handle_ids["ID"] = id_lbl
+            # ID label: clean pill shape
+            id_lbl_bg = self.canvas.create_rectangle(x + w//2 - 20, y - 20, x + w//2 + 20, y - 6, fill="#1976D2", outline="#FFFFFF", width=2, tags=("handle", f"id_{elem.elem_id}"))
+            id_lbl = self.canvas.create_text(x + w//2, y - 15, text=f"ID:{elem.elem_id}", fill="white", font=("Segoe UI", 8, "bold"), tags=("handle", f"id_{elem.elem_id}"))
+            elem.handle_ids["ID_BG"] = id_lbl_bg
+            elem.handle_ids["ID"] = id_lbl
 
     def _draw_label(self, elem, x, y, w, h, bg, fg, font, outline, outline_w):
         self._draw_flat_rect(elem, x, y, w, h, bg, outline, outline_w)
@@ -819,7 +821,7 @@ class CanvasRenderer:
         self._render_text_on_canvas(elem, x+4, y, w-8, h, text, fg, font, anchor="w")
 
     def _draw_button(self, elem, x, y, w, h, bg, fg, font, outline, outline_w):
-        self._draw_raised_rect(elem, x, y, w, h, bg, outline, outline_w)
+        self._draw_flat_rect(elem, x, y, w, h, bg, outline, outline_w)
         self._render_text_on_canvas(elem, x, y, w, h, elem.display_label, fg, font)
 
     def _draw_radiobutton(self, elem, x, y, w, h, bg, fg, font, outline, outline_w):
@@ -827,9 +829,9 @@ class CanvasRenderer:
         cx = x + 20
         cy = y + h//2
         r = 6
-        self.canvas.create_oval(cx-r, cy-r, cx+r, cy+r, outline="black", fill=bg, tags=("element", f"elem_{elem.elem_id}"))
+        self.canvas.create_oval(cx-r, cy-r, cx+r, cy+r, outline="#757575", fill=bg, tags=("element", f"elem_{elem.elem_id}"))
         if elem.props.get("value") == 1:
-            self.canvas.create_oval(cx-3, cy-3, cx+3, cy+3, fill="black", tags=("element", f"elem_{elem.elem_id}"))
+            self.canvas.create_oval(cx-3, cy-3, cx+3, cy+3, fill="#1976D2", tags=("element", f"elem_{elem.elem_id}"))
         self._render_text_on_canvas(elem, x+25, y, w-25, h, elem.display_label, fg, font, anchor="w")
 
     def _draw_checkbutton(self, elem, x, y, w, h, bg, fg, font, outline, outline_w):
@@ -837,34 +839,34 @@ class CanvasRenderer:
         cx = x + 16
         cy = y + h//2
         size = 10
-        self.canvas.create_rectangle(cx-size//2, cy-size//2, cx+size//2, cy+size//2, outline="black", fill=bg, tags=("element", f"elem_{elem.elem_id}"))
+        self.canvas.create_rectangle(cx-size//2, cy-size//2, cx+size//2, cy+size//2, outline="#757575", fill=bg, tags=("element", f"elem_{elem.elem_id}"))
         if elem.props.get("onvalue") == 1:
-            self.canvas.create_line(cx-3, cy, cx, cy+3, cx+5, cy-4, fill="black", width=2, tags=("element", f"elem_{elem.elem_id}"))
+            self.canvas.create_line(cx-3, cy, cx, cy+3, cx+5, cy-4, fill="#1976D2", width=2, tags=("element", f"elem_{elem.elem_id}"))
         self._render_text_on_canvas(elem, x+25, y, w-25, h, elem.display_label, fg, font, anchor="w")
 
     def _draw_scale(self, elem, x, y, w, h, bg, fg, font, outline, outline_w):
         self._draw_flat_rect(elem, x, y, w, h, bg, outline, outline_w)
         track_y = y + h//2
         track_len = w - 20
-        self.canvas.create_line(x+10, track_y, x+10+track_len, track_y, fill="gray", width=4, tags=("element", f"elem_{elem.elem_id}"))
+        self.canvas.create_line(x+10, track_y, x+10+track_len, track_y, fill="#B0BEC5", width=4, tags=("element", f"elem_{elem.elem_id}"))
         thumb_x = x + 10 + int(track_len * 0.3)
-        self.canvas.create_oval(thumb_x-6, track_y-6, thumb_x+6, track_y+6, fill="black", tags=("element", f"elem_{elem.elem_id}"))
+        self.canvas.create_oval(thumb_x-6, track_y-6, thumb_x+6, track_y+6, fill="#1976D2", outline="#1976D2", tags=("element", f"elem_{elem.elem_id}"))
         val = elem.props.get("to", 100) * 0.3
-        self.canvas.create_text(x+w-5, track_y-10, text=str(int(val)), anchor="e", tags=("element", f"elem_{elem.elem_id}"))
+        self.canvas.create_text(x+w-5, track_y-10, text=str(int(val)), anchor="e", fill="#212121", tags=("element", f"elem_{elem.elem_id}"))
 
     def _draw_combobox(self, elem, x, y, w, h, bg, fg, font, outline, outline_w):
         self._draw_sunken_rect(elem, x, y, w, h, bg, outline, outline_w)
         arrow_x = x + w - 18
         arrow_y = y + h//2
-        self.canvas.create_polygon(arrow_x-5, arrow_y-4, arrow_x+5, arrow_y-4, arrow_x, arrow_y+4, fill="black", tags=("element", f"elem_{elem.elem_id}"))
+        self.canvas.create_polygon(arrow_x-5, arrow_y-4, arrow_x+5, arrow_y-4, arrow_x, arrow_y+4, fill="#757575", tags=("element", f"elem_{elem.elem_id}"))
         self._render_text_on_canvas(elem, x+4, y, w-22, h, elem.display_label, fg, font, anchor="w")
 
     def _draw_spinbox(self, elem, x, y, w, h, bg, fg, font, outline, outline_w):
         self._draw_sunken_rect(elem, x, y, w, h, bg, outline, outline_w)
         arrow_x = x + w - 16
         arrow_y = y + h//2
-        self.canvas.create_polygon(arrow_x-6, arrow_y-2, arrow_x+6, arrow_y-2, arrow_x, arrow_y-8, fill="black", tags=("element", f"elem_{elem.elem_id}"))
-        self.canvas.create_polygon(arrow_x-6, arrow_y+2, arrow_x+6, arrow_y+2, arrow_x, arrow_y+8, fill="black", tags=("element", f"elem_{elem.elem_id}"))
+        self.canvas.create_polygon(arrow_x-6, arrow_y-2, arrow_x+6, arrow_y-2, arrow_x, arrow_y-8, fill="#757575", tags=("element", f"elem_{elem.elem_id}"))
+        self.canvas.create_polygon(arrow_x-6, arrow_y+2, arrow_x+6, arrow_y+2, arrow_x, arrow_y+8, fill="#757575", tags=("element", f"elem_{elem.elem_id}"))
         self._render_text_on_canvas(elem, x+4, y, w-20, h, elem.display_label, fg, font, anchor="w")
 
     def _draw_listbox(self, elem, x, y, w, h, bg, fg, font, outline, outline_w):
@@ -872,19 +874,19 @@ class CanvasRenderer:
         for i in range(3):
             line_y = y + 12 + i*20
             if line_y < y + h - 5:
-                self.canvas.create_line(x+5, line_y, x+w-5, line_y, fill="gray", tags=("element", f"elem_{elem.elem_id}"))
+                self.canvas.create_line(x+5, line_y, x+w-5, line_y, fill="#E0E0E0", tags=("element", f"elem_{elem.elem_id}"))
 
     def _draw_text(self, elem, x, y, w, h, bg, fg, font, outline, outline_w):
         self._draw_sunken_rect(elem, x, y, w, h, bg, outline, outline_w)
         for i in range(max(1, h//22)):
             line_y = y + 15 + i*22
             if line_y < y + h - 5:
-                self.canvas.create_line(x+5, line_y, x+w-5, line_y, fill="gray", tags=("element", f"elem_{elem.elem_id}"))
+                self.canvas.create_line(x+5, line_y, x+w-5, line_y, fill="#E0E0E0", tags=("element", f"elem_{elem.elem_id}"))
 
     def _draw_canvas(self, elem, x, y, w, h, bg, fg, font, outline, outline_w):
         self._draw_sunken_rect(elem, x, y, w, h, bg, outline, outline_w)
-        self.canvas.create_rectangle(x+10, y+10, x+w-10, y+h-10, outline="gray", tags=("element", f"elem_{elem.elem_id}"))
-        self.canvas.create_line(x+15, y+15, x+w-15, y+h-15, fill="gray", tags=("element", f"elem_{elem.elem_id}"))
+        self.canvas.create_rectangle(x+10, y+10, x+w-10, y+h-10, outline="#B0BEC5", tags=("element", f"elem_{elem.elem_id}"))
+        self.canvas.create_line(x+15, y+15, x+w-15, y+h-15, fill="#B0BEC5", tags=("element", f"elem_{elem.elem_id}"))
 
     def _draw_progressbar(self, elem, x, y, w, h, bg, fg, font, outline, outline_w):
         self._draw_flat_rect(elem, x, y, w, h, bg, outline, outline_w)
@@ -894,16 +896,16 @@ class CanvasRenderer:
         frac = min(1.0, max(0, value/max_val))
         if orient == "vertical":
             bar_h = int((h-4) * frac)
-            self.canvas.create_rectangle(x+2, y+h-2-bar_h, x+w-2, y+h-2, fill="blue", outline="", tags=("element", f"elem_{elem.elem_id}"))
+            self.canvas.create_rectangle(x+2, y+h-2-bar_h, x+w-2, y+h-2, fill="#1976D2", outline="", tags=("element", f"elem_{elem.elem_id}"))
         else:
             bar_w = int((w-4) * frac)
-            self.canvas.create_rectangle(x+2, y+2, x+2+bar_w, y+h-2, fill="blue", outline="", tags=("element", f"elem_{elem.elem_id}"))
+            self.canvas.create_rectangle(x+2, y+2, x+2+bar_w, y+h-2, fill="#1976D2", outline="", tags=("element", f"elem_{elem.elem_id}"))
 
     def _draw_scrollbar(self, elem, x, y, w, h, bg, fg, font, outline, outline_w):
         self._draw_flat_rect(elem, x, y, w, h, bg, outline, outline_w)
         slider_h = h//3
         slider_y = y + (h - slider_h)//2
-        self.canvas.create_rectangle(x+2, slider_y, x+w-2, slider_y+slider_h, fill="gray", outline="darkgray", tags=("element", f"elem_{elem.elem_id}"))
+        self.canvas.create_rectangle(x+2, slider_y, x+w-2, slider_y+slider_h, fill="#B0BEC5", outline="#78909C", tags=("element", f"elem_{elem.elem_id}"))
 
     def _draw_frame(self, elem, x, y, w, h, bg, fg, font, outline, outline_w):
         relief = elem.props.get("relief", "groove")
@@ -920,7 +922,7 @@ class CanvasRenderer:
 
     def _draw_notebook(self, elem, x, y, w, h, bg, fg, font, outline, outline_w):
         self._draw_flat_rect(elem, x, y, w, h, bg, outline, outline_w)
-        self.canvas.create_rectangle(x, y+26, x+w, y+h, fill=bg, outline="gray", tags=("element", f"elem_{elem.elem_id}"))
+        self.canvas.create_rectangle(x, y+26, x+w, y+h, fill=bg, outline="#B0BEC5", tags=("element", f"elem_{elem.elem_id}"))
         tabs = elem.props.get("tabs", ["Tab 1", "Tab 2"]) or ["Tab 1"]
         active = int(elem.props.get("active_tab", 0) or 0)
         active = max(0, min(active, len(tabs) - 1))
@@ -930,9 +932,9 @@ class CanvasRenderer:
             if tab_x >= x + w - 4:
                 break
             tw = min(tab_width, x + w - 4 - tab_x)
-            fill = "#ffffff" if i == active else "#e0e0e0"
-            text_fill = "#333333" if i == active else "#666666"
-            self.canvas.create_rectangle(tab_x, y+4, tab_x+tw, y+26, fill=fill, outline="gray", tags=("element", f"elem_{elem.elem_id}"))
+            fill = "#FFFFFF" if i == active else "#F5F5F5"
+            text_fill = "#1976D2" if i == active else "#757575"
+            self.canvas.create_rectangle(tab_x, y+4, tab_x+tw, y+26, fill=fill, outline="#B0BEC5", tags=("element", f"elem_{elem.elem_id}"))
             self.canvas.create_text(tab_x+tw/2, y+15, text=str(title), fill=text_fill, font=font, tags=("element", f"elem_{elem.elem_id}"))
             tab_x += tw + 3
 
@@ -941,17 +943,17 @@ class CanvasRenderer:
         orient = elem.props.get("orient", "horizontal")
         if orient == "vertical":
             sash_y = y + h//2
-            self.canvas.create_line(x+10, sash_y, x+w-10, sash_y, fill="gray", width=2, tags=("element", f"elem_{elem.elem_id}"))
+            self.canvas.create_line(x+10, sash_y, x+w-10, sash_y, fill="#B0BEC5", width=2, tags=("element", f"elem_{elem.elem_id}"))
         else:
             sash_x = x + w//2
-            self.canvas.create_line(sash_x, y+10, sash_x, y+h-10, fill="gray", width=2, tags=("element", f"elem_{elem.elem_id}"))
+            self.canvas.create_line(sash_x, y+10, sash_x, y+h-10, fill="#B0BEC5", width=2, tags=("element", f"elem_{elem.elem_id}"))
 
     def _draw_separator(self, elem, x, y, w, h, bg, fg, font, outline, outline_w):
         orient = elem.props.get("orient", "horizontal")
         if orient == "vertical":
-            self.canvas.create_line(x + w//2, y, x + w//2, y + h, fill="gray", width=2, tags=("element", f"elem_{elem.elem_id}"))
+            self.canvas.create_line(x + w//2, y, x + w//2, y + h, fill="#B0BEC5", width=2, tags=("element", f"elem_{elem.elem_id}"))
         else:
-            self.canvas.create_line(x, y + h//2, x + w, y + h//2, fill="gray", width=2, tags=("element", f"elem_{elem.elem_id}"))
+            self.canvas.create_line(x, y + h//2, x + w, y + h//2, fill="#B0BEC5", width=2, tags=("element", f"elem_{elem.elem_id}"))
 
     def _draw_table(self, elem, x, y, w, h, bg, fg, font, outline, outline_w):
         self._draw_sunken_rect(elem, x, y, w, h, bg, outline, outline_w)
@@ -963,14 +965,14 @@ class CanvasRenderer:
         n_cols = max(1, len(columns))
         col_w = w / n_cols
         row_h = 24
-        self.canvas.create_rectangle(x, y, x+w, y+row_h, fill="#E0E0E0", outline="gray", tags=("element", f"elem_{elem.elem_id}"))
+        self.canvas.create_rectangle(x, y, x+w, y+row_h, fill="#E3F2FD", outline="#B0BEC5", tags=("element", f"elem_{elem.elem_id}"))
         for i, col in enumerate(columns):
-            self.canvas.create_line(x + (i+1)*col_w, y, x + (i+1)*col_w, y+row_h, fill="gray", tags=("element", f"elem_{elem.elem_id}"))
-            self.canvas.create_text(x + i*col_w + col_w/2, y + row_h/2, text=col, fill=fg, font=font, tags=("element", f"elem_{elem.elem_id}"))
+            self.canvas.create_line(x + (i+1)*col_w, y, x + (i+1)*col_w, y+row_h, fill="#B0BEC5", tags=("element", f"elem_{elem.elem_id}"))
+            self.canvas.create_text(x + i*col_w + col_w/2, y + row_h/2, text=col, fill="#1976D2", font=font, tags=("element", f"elem_{elem.elem_id}"))
         rows = min(5, max(0, int(h - row_h) // 20))
         for r in range(rows):
             ry = y + row_h + r*20
-            self.canvas.create_rectangle(x, ry, x+w, ry+20, outline="gray", tags=("element", f"elem_{elem.elem_id}"))
+            self.canvas.create_rectangle(x, ry, x+w, ry+20, outline="#E0E0E0", tags=("element", f"elem_{elem.elem_id}"))
 
     def _draw_fallback(self, elem, x, y, w, h, bg, fg, font, outline, outline_w):
         self._draw_flat_rect(elem, x, y, w, h, bg, outline, outline_w)
@@ -984,21 +986,21 @@ class CanvasRenderer:
 
     def _draw_sunken_rect(self, elem, x, y, w, h, fill, outline, outline_w):
         self.canvas.create_rectangle(x, y, x+w, y+h, fill=fill, outline=outline, width=outline_w, tags=("element", f"elem_{elem.elem_id}"))
-        self.canvas.create_line(x+1, y+1, x+w-2, y+1, fill="gray", tags=("element", f"elem_{elem.elem_id}"))
-        self.canvas.create_line(x+1, y+1, x+1, y+h-2, fill="gray", tags=("element", f"elem_{elem.elem_id}"))
-        self.canvas.create_line(x+w-2, y+2, x+w-2, y+h-2, fill="white", tags=("element", f"elem_{elem.elem_id}"))
-        self.canvas.create_line(x+2, y+h-2, x+w-2, y+h-2, fill="white", tags=("element", f"elem_{elem.elem_id}"))
+        self.canvas.create_line(x+1, y+1, x+w-2, y+1, fill="#B0BEC5", tags=("element", f"elem_{elem.elem_id}"))
+        self.canvas.create_line(x+1, y+1, x+1, y+h-2, fill="#B0BEC5", tags=("element", f"elem_{elem.elem_id}"))
+        self.canvas.create_line(x+w-2, y+2, x+w-2, y+h-2, fill="#FFFFFF", tags=("element", f"elem_{elem.elem_id}"))
+        self.canvas.create_line(x+2, y+h-2, x+w-2, y+h-2, fill="#FFFFFF", tags=("element", f"elem_{elem.elem_id}"))
 
     def _draw_raised_rect(self, elem, x, y, w, h, fill, outline, outline_w):
         self.canvas.create_rectangle(x, y, x+w, y+h, fill=fill, outline=outline, width=outline_w, tags=("element", f"elem_{elem.elem_id}"))
-        self.canvas.create_line(x+1, y+1, x+w-2, y+1, fill="white", tags=("element", f"elem_{elem.elem_id}"))
-        self.canvas.create_line(x+1, y+1, x+1, y+h-2, fill="white", tags=("element", f"elem_{elem.elem_id}"))
-        self.canvas.create_line(x+w-2, y+2, x+w-2, y+h-2, fill="gray", tags=("element", f"elem_{elem.elem_id}"))
-        self.canvas.create_line(x+2, y+h-2, x+w-2, y+h-2, fill="gray", tags=("element", f"elem_{elem.elem_id}"))
+        self.canvas.create_line(x+1, y+1, x+w-2, y+1, fill="#FFFFFF", tags=("element", f"elem_{elem.elem_id}"))
+        self.canvas.create_line(x+1, y+1, x+1, y+h-2, fill="#FFFFFF", tags=("element", f"elem_{elem.elem_id}"))
+        self.canvas.create_line(x+w-2, y+2, x+w-2, y+h-2, fill="#B0BEC5", tags=("element", f"elem_{elem.elem_id}"))
+        self.canvas.create_line(x+2, y+h-2, x+w-2, y+h-2, fill="#B0BEC5", tags=("element", f"elem_{elem.elem_id}"))
 
     def _draw_groove_rect(self, elem, x, y, w, h, fill, outline, outline_w):
         self.canvas.create_rectangle(x, y, x+w, y+h, fill=fill, outline=outline, width=outline_w, tags=("element", f"elem_{elem.elem_id}"))
-        self.canvas.create_rectangle(x+2, y+2, x+w-2, y+h-2, outline="gray", width=1, tags=("element", f"elem_{elem.elem_id}"))
+        self.canvas.create_rectangle(x+2, y+2, x+w-2, y+h-2, outline="#B0BEC5", width=1, tags=("element", f"elem_{elem.elem_id}"))
 
     def _render_text_on_canvas(self, elem, x, y, w, h, text, color, font, anchor="center"):
         if anchor == "center":
@@ -1030,6 +1032,7 @@ class CanvasRenderer:
 class GUIBuilderApp:
     def __init__(self, root: tk.Tk):
         self.root = root
+        self._setup_styles()
         self.window_title = "My Application"
         self.current_file_path: Optional[str] = None
         self._is_modified = False
@@ -1105,6 +1108,75 @@ class GUIBuilderApp:
         
         self._save_state()
 
+    def _setup_styles(self):
+        """Configure modern ttk styles and default font."""
+        style = ttk.Style()
+        available_themes = style.theme_names()
+        if 'clam' in available_themes:
+            style.theme_use('clam')
+        else:
+            style.theme_use('default')  # fallback
+
+        # Global font
+        default_font = tkfont.nametofont("TkDefaultFont")
+        default_font.configure(family="Segoe UI", size=9)
+        self.root.option_add("*Font", default_font)
+
+        # Color palette
+        bg = "#F5F5F5"
+        fg = "#212121"
+        select_bg = "#1976D2"
+        select_fg = "#FFFFFF"
+        hover_bg = "#E3F2FD"
+        active_bg = "#1565C0"
+        border_color = "#B0BEC5"
+
+        # Configure ttk styles
+        style.configure("TFrame", background=bg)
+        style.configure("TLabel", background=bg, foreground=fg)
+        style.configure("TButton", background=bg, foreground=fg, borderwidth=0, focusthickness=0, padding=6)
+        style.map("TButton",
+                  background=[('active', hover_bg), ('pressed', active_bg)],
+                  foreground=[('active', fg), ('pressed', select_fg)])
+        style.configure("Toolbar.TButton", background=bg, foreground=fg, borderwidth=0, focusthickness=0, padding=6)
+        style.map("Toolbar.TButton",
+                  background=[('active', hover_bg), ('pressed', active_bg)],
+                  foreground=[('active', fg), ('pressed', select_fg)])
+
+        style.configure("TEntry", fieldbackground="white", borderwidth=1, relief="solid")
+        style.map("TEntry", fieldbackground=[('focus', 'white')])
+        style.configure("TCombobox", fieldbackground="white", borderwidth=1, relief="solid")
+        style.map("TCombobox", fieldbackground=[('focus', 'white')])
+
+        style.configure("TScrollbar", background=bg, troughcolor=bg, borderwidth=0)
+        style.map("TScrollbar", background=[('active', hover_bg)])
+
+        style.configure("TPanedWindow", background=bg)
+
+        # Toolbox item styles
+        style.configure("ToolboxItem.TFrame", background="#FFFFFF", relief="solid", borderwidth=1)
+        style.map("ToolboxItem.TFrame", background=[('active', hover_bg)])
+        style.configure("ToolboxHover.TFrame", background=hover_bg, relief="solid", borderwidth=1)
+        style.configure("ToolboxActive.TFrame", background="#FF6B35", relief="solid", borderwidth=1)
+
+        # Property inspector row style
+        style.configure("PropRow.TFrame", background="#FFFFFF", relief="flat", borderwidth=0)
+
+        # Status bar style
+        style.configure("Status.TLabel", background="#ECEFF1", foreground=fg, relief="sunken", anchor="w")
+
+        # Notebook style (ttk.Notebook)
+        style.configure("TNotebook", background=bg, borderwidth=0)
+        style.configure("TNotebook.Tab", background=bg, foreground=fg, padding=[8, 4], borderwidth=0)
+        style.map("TNotebook.Tab",
+                  background=[('selected', '#FFFFFF'), ('active', hover_bg)],
+                  foreground=[('selected', '#1976D2'), ('active', fg)])
+
+        # Treeview (Table)
+        style.configure("Treeview", background="white", foreground=fg, fieldbackground="white", rowheight=24)
+        style.map("Treeview", background=[('selected', select_bg)])
+        style.configure("Treeview.Heading", background=bg, foreground=fg, relief="flat", borderwidth=0)
+
     def _update_window_title_display(self):
         filename = os.path.basename(self.current_file_path) if self.current_file_path else "Untitled.tvd"
         dirty_marker = "*" if self._is_modified else ""
@@ -1124,12 +1196,12 @@ class GUIBuilderApp:
         self.main_paned = ttk.PanedWindow(self.v_paned, orient=tk.HORIZONTAL)
         self.v_paned.add(self.main_paned, weight=3)
 
-        self.toolbox_frame = ttk.Frame(self.main_paned, width=220)
+        self.toolbox_frame = ttk.Frame(self.main_paned, width=220, style="TFrame")
         self.toolbox_frame.pack_propagate(False)
         self.main_paned.add(self.toolbox_frame, weight=0)
         self._build_toolbox()
 
-        center_frame = ttk.Frame(self.main_paned)
+        center_frame = ttk.Frame(self.main_paned, style="TFrame")
         self.main_paned.add(center_frame, weight=1)
         
         self.canvas_scroll_y = ttk.Scrollbar(center_frame, orient=tk.VERTICAL)
@@ -1137,7 +1209,7 @@ class GUIBuilderApp:
         self.canvas = tk.Canvas(
             center_frame, bg=self.CANVAS_BG, width=self.CANVAS_W, height=self.CANVAS_H,
             yscrollcommand=self.canvas_scroll_y.set, xscrollcommand=self.canvas_scroll_x.set,
-            takefocus=1          # <-- ADD THIS
+            takefocus=1, highlightthickness=0, relief="flat"
         )
         self.canvas_scroll_y.config(command=self.canvas.yview)
         self.canvas_scroll_x.config(command=self.canvas.xview)
@@ -1156,55 +1228,56 @@ class GUIBuilderApp:
         self.canvas.bind("<ButtonRelease-1>", self._on_canvas_release)
         self.canvas.bind("<Double-Button-1>", self._on_canvas_double_click)
 
-        # # Ensure Ctrl+A works on canvas
-        # self.canvas.bind("<Control-a>", self._select_all)   # already present, keep it
-        
-        self.prop_frame = ttk.Frame(self.main_paned, width=300)
+        self.prop_frame = ttk.Frame(self.main_paned, width=300, style="TFrame")
         self.prop_frame.pack_propagate(False)
         self.main_paned.add(self.prop_frame, weight=0)
         self._build_property_inspector()
 
-        self.code_frame = ttk.Frame(self.v_paned)
+        self.code_frame = ttk.Frame(self.v_paned, style="TFrame")
         self.code_frame.grid_rowconfigure(0, weight=0)
         self.code_frame.grid_rowconfigure(1, weight=1)
         self.code_frame.grid_columnconfigure(0, weight=1)
 
-        code_header = ttk.Frame(self.code_frame)
+        code_header = ttk.Frame(self.code_frame, style="TFrame")
         code_header.grid(row=0, column=0, sticky="ew", padx=2, pady=2)
-        ttk.Label(code_header, text="LIVE CODE", font=("Segoe UI", 10, "bold")).pack(side=tk.LEFT, padx=5)
+        ttk.Label(code_header, text="LIVE CODE", font=("Segoe UI", 10, "bold"), style="TLabel").pack(side=tk.LEFT, padx=5)
 
         self.code_text = scrolledtext.ScrolledText(
-            self.code_frame, font=("Courier New", 9), bg="#1E1E1E", fg="#D4D4D4", wrap=tk.NONE
+            self.code_frame, font=("Consolas", 9), bg="#1E1E1E", fg="#D4D4D4", wrap=tk.NONE,
+            insertbackground="white", relief="flat", borderwidth=0
         )
         self.code_text.grid(row=1, column=0, sticky="nsew", padx=2, pady=2)
         self.code_text.config(state=tk.DISABLED)
 
         self.status_var = tk.StringVar()
         self.count_var = tk.StringVar()
-        status_bar = ttk.Frame(self.root)
+        status_bar = ttk.Frame(self.root, style="TFrame")
         status_bar.grid(row=2, column=0, sticky="ew")
-        ttk.Label(status_bar, textvariable=self.status_var, relief=tk.SUNKEN, anchor=tk.W).pack(side=tk.LEFT, fill=tk.X, expand=True)
-        ttk.Label(status_bar, textvariable=self.count_var, relief=tk.SUNKEN, anchor=tk.W).pack(side=tk.RIGHT)
+        ttk.Label(status_bar, textvariable=self.status_var, style="Status.TLabel", padding=4).pack(side=tk.LEFT, fill=tk.X, expand=True)
+        ttk.Label(status_bar, textvariable=self.count_var, style="Status.TLabel", padding=4).pack(side=tk.RIGHT)
 
     def _build_toolbar(self):
-        toolbar = ttk.Frame(self.root)
-        toolbar.grid(row=0, column=0, sticky="ew", padx=5, pady=2)
-        
-        ttk.Button(toolbar, text="📄 New Design", command=self._new_design).pack(side=tk.LEFT, padx=2)
-        ttk.Button(toolbar, text="📂 Load Design", command=self._load_design).pack(side=tk.LEFT, padx=2)
-        ttk.Button(toolbar, text="💾 Save Design", command=self._save_design).pack(side=tk.LEFT, padx=2)
+        toolbar = ttk.Frame(self.root, style="TFrame")
+        toolbar.grid(row=0, column=0, sticky="ew", padx=5, pady=4)
+        toolbar.columnconfigure(0, weight=1)
+
+        # Use custom button style
+        btn_style = "Toolbar.TButton"
+        ttk.Button(toolbar, text="📄 New Design", command=self._new_design, style=btn_style).pack(side=tk.LEFT, padx=2)
+        ttk.Button(toolbar, text="📂 Load Design", command=self._load_design, style=btn_style).pack(side=tk.LEFT, padx=2)
+        ttk.Button(toolbar, text="💾 Save Design", command=self._save_design, style=btn_style).pack(side=tk.LEFT, padx=2)
+        ttk.Separator(toolbar, orient=tk.VERTICAL, style="TSeparator").pack(side=tk.LEFT, fill=tk.Y, padx=5, pady=2)
+        ttk.Button(toolbar, text="↶ Undo", command=self._undo, style=btn_style).pack(side=tk.LEFT, padx=2)
+        ttk.Button(toolbar, text="↷ Redo", command=self._redo, style=btn_style).pack(side=tk.LEFT, padx=2)
         ttk.Separator(toolbar, orient=tk.VERTICAL).pack(side=tk.LEFT, fill=tk.Y, padx=5, pady=2)
-        ttk.Button(toolbar, text="↶ Undo", command=self._undo).pack(side=tk.LEFT, padx=2)
-        ttk.Button(toolbar, text="↷ Redo", command=self._redo).pack(side=tk.LEFT, padx=2)
-        ttk.Separator(toolbar, orient=tk.VERTICAL).pack(side=tk.LEFT, fill=tk.Y, padx=5, pady=2)
-        ttk.Button(toolbar, text="🗑️ Delete", command=self._delete_selected).pack(side=tk.LEFT, padx=2)
-        ttk.Button(toolbar, text="🧹 Clear Canvas", command=self._clear_all).pack(side=tk.LEFT, padx=2)
+        ttk.Button(toolbar, text="🗑️ Delete", command=self._delete_selected, style=btn_style).pack(side=tk.LEFT, padx=2)
+        ttk.Button(toolbar, text="🧹 Clear Canvas", command=self._clear_all, style=btn_style).pack(side=tk.LEFT, padx=2)
         ttk.Separator(toolbar, orient=tk.VERTICAL).pack(side=tk.LEFT, fill=tk.Y, padx=5, pady=2)
 
-        ttk.Button(toolbar, text="📋 Copy Code", command=self._copy_code).pack(side=tk.LEFT, padx=2)
-        ttk.Button(toolbar, text="▶ Run Preview", command=self._run_preview).pack(side=tk.LEFT, padx=2)
+        ttk.Button(toolbar, text="📋 Copy Code", command=self._copy_code, style=btn_style).pack(side=tk.LEFT, padx=2)
+        ttk.Button(toolbar, text="▶ Run Preview", command=self._run_preview, style=btn_style).pack(side=tk.LEFT, padx=2)
         ttk.Separator(toolbar, orient=tk.VERTICAL).pack(side=tk.LEFT, fill=tk.Y, padx=5, pady=2)
-        ttk.Button(toolbar, text="👁️ Toggle Code", command=self._toggle_code_view).pack(side=tk.LEFT, padx=2)
+        ttk.Button(toolbar, text="👁️ Toggle Code", command=self._toggle_code_view, style=btn_style).pack(side=tk.LEFT, padx=2)
 
     def _toggle_code_view(self):
         if self.code_visible:
@@ -1217,11 +1290,11 @@ class GUIBuilderApp:
             self._update_status("Live code section visible.")
 
     def _build_toolbox(self):
-        ttk.Label(self.toolbox_frame, text="TOOLBOX", font=("Segoe UI", 10, "bold")).pack(pady=(5, 10))
+        ttk.Label(self.toolbox_frame, text="TOOLBOX", font=("Segoe UI", 10, "bold"), style="TLabel").pack(pady=(5, 10))
 
-        canvas_toolbox = tk.Canvas(self.toolbox_frame, highlightthickness=0)
+        canvas_toolbox = tk.Canvas(self.toolbox_frame, highlightthickness=0, bg="#F5F5F5")
         scrollbar = ttk.Scrollbar(self.toolbox_frame, orient=tk.VERTICAL, command=canvas_toolbox.yview)
-        scrollable_frame = ttk.Frame(canvas_toolbox)
+        scrollable_frame = ttk.Frame(canvas_toolbox, style="TFrame")
         scrollable_frame.bind("<Configure>", lambda e: canvas_toolbox.configure(scrollregion=canvas_toolbox.bbox("all")))
         canvas_toolbox.create_window((0, 0), window=scrollable_frame, anchor="nw")
         canvas_toolbox.configure(yscrollcommand=scrollbar.set)
@@ -1229,17 +1302,14 @@ class GUIBuilderApp:
         canvas_toolbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
-        style = ttk.Style()
-        style.configure("ToolboxItem.TFrame", background="#F8F9FA", relief="raised", borderwidth=1)
-        style.configure("ToolboxHover.TFrame", background="#E9ECEF", relief="raised", borderwidth=1)
-
+        # Predefined styles for toolbox items (already defined)
         categories = {}
         for name, spec in ELEMENT_TYPES.items():
             cat = spec.get("category", "Other")
             categories.setdefault(cat, []).append((name, spec))
 
         for cat in sorted(categories.keys()):
-            ttk.Label(scrollable_frame, text=cat, font=("Segoe UI", 9, "bold")).pack(anchor=tk.W, padx=5, pady=(10,2))
+            ttk.Label(scrollable_frame, text=cat, font=("Segoe UI", 9, "bold"), style="TLabel").pack(anchor=tk.W, padx=5, pady=(10,2))
             for name, spec in sorted(categories[cat], key=lambda x: x[0]):
                 display_str = spec["display"]
                 parts = display_str.split(" ", 1)
@@ -1249,10 +1319,10 @@ class GUIBuilderApp:
                 item_frame = ttk.Frame(scrollable_frame, style="ToolboxItem.TFrame", cursor="hand2")
                 item_frame.pack(fill=tk.X, padx=5, pady=2)
                 
-                lbl_icon = ttk.Label(item_frame, text=icon, anchor="w")
+                lbl_icon = ttk.Label(item_frame, text=icon, anchor="w", style="TLabel")
                 lbl_icon.pack(side=tk.LEFT, padx=6, pady=4)
                 
-                lbl_name = ttk.Label(item_frame, text=elem_name, anchor="e")
+                lbl_name = ttk.Label(item_frame, text=elem_name, anchor="e", style="TLabel")
                 lbl_name.pack(side=tk.RIGHT, padx=6, pady=4)
 
                 def on_click(e, t=name):
@@ -1277,7 +1347,6 @@ class GUIBuilderApp:
             if frame:
                 style_name = "ToolboxActive.TFrame" if name == active_name else "ToolboxItem.TFrame"
                 frame.configure(style=style_name)
-        ttk.Style().configure("ToolboxActive.TFrame", background="#FF6B35", relief="sunken")
 
     def _reset_tool_colors(self):
         for name in ELEMENT_TYPES:
@@ -1286,15 +1355,15 @@ class GUIBuilderApp:
                 frame.configure(style="ToolboxItem.TFrame")
 
     def _build_property_inspector(self):
-        ttk.Label(self.prop_frame, text="PROPERTIES", font=("Segoe UI", 10, "bold")).pack(pady=(5, 6))
-        self.prop_title_label = ttk.Label(self.prop_frame, text="No element selected.", wraplength=255)
+        ttk.Label(self.prop_frame, text="PROPERTIES", font=("Segoe UI", 10, "bold"), style="TLabel").pack(pady=(5, 6))
+        self.prop_title_label = ttk.Label(self.prop_frame, text="No element selected.", wraplength=255, style="TLabel")
         self.prop_title_label.pack(anchor=tk.W, padx=6, pady=(0, 2), fill=tk.X)
         self.prop_context_var = tk.StringVar(value="Container: None")
-        ttk.Label(self.prop_frame, textvariable=self.prop_context_var, wraplength=255, foreground="#555555").pack(anchor=tk.W, padx=6, pady=(0, 5), fill=tk.X)
+        ttk.Label(self.prop_frame, textvariable=self.prop_context_var, wraplength=255, foreground="#757575", style="TLabel").pack(anchor=tk.W, padx=6, pady=(0, 5), fill=tk.X)
 
-        prop_canvas = tk.Canvas(self.prop_frame, highlightthickness=0, width=270)
+        prop_canvas = tk.Canvas(self.prop_frame, highlightthickness=0, bg="#F5F5F5", width=270)
         prop_scroll = ttk.Scrollbar(self.prop_frame, orient=tk.VERTICAL, command=prop_canvas.yview)
-        self.prop_scrollable = ttk.Frame(prop_canvas)
+        self.prop_scrollable = ttk.Frame(prop_canvas, style="TFrame")
         self.prop_scrollable.bind("<Configure>", lambda e: prop_canvas.configure(scrollregion=prop_canvas.bbox("all")))
         prop_window = prop_canvas.create_window((0, 0), window=self.prop_scrollable, anchor="nw", width=270)
         prop_canvas.bind("<Configure>", lambda e: prop_canvas.itemconfigure(prop_window, width=max(230, e.width - 2)))
@@ -1305,15 +1374,239 @@ class GUIBuilderApp:
 
         self.prop_rows = []
         for i in range(20):
-            frame = ttk.Frame(self.prop_scrollable)
-            lbl = ttk.Label(frame, text="", width=12, anchor=tk.W)
+            frame = ttk.Frame(self.prop_scrollable, style="PropRow.TFrame")
+            lbl = ttk.Label(frame, text="", width=12, anchor=tk.W, style="TLabel")
             lbl.pack(side=tk.LEFT, padx=(2, 4))
-            control_frame = ttk.Frame(frame)
+            control_frame = ttk.Frame(frame, style="TFrame")
             control_frame.pack(side=tk.LEFT, fill=tk.X, expand=True)
             self.prop_rows.append({
                 "frame": frame, "label": lbl, "control_frame": control_frame,
                 "widget": None, "visible": False,
             })
+
+    # ─── Incremental code insertion for new elements ──────────────────────
+    def _insert_code_for_new_elements(self, new_elems: List[DesignElement]) -> bool:
+        """
+        Attempts to surgically insert the code for new elements into the existing full_code.
+        Returns True on success, False if insertion failed and a full regeneration is needed.
+        """
+        if not self.full_code:
+            return False
+
+        lines = self.full_code.splitlines(True)  # keep line endings
+
+        # ----- Locate class, init, and main guard boundaries -----
+        class_start = None
+        for i, line in enumerate(lines):
+            if line.startswith("class MainApplication:"):
+                class_start = i
+                break
+        if class_start is None:
+            return False
+
+        init_start = None
+        for i in range(class_start, len(lines)):
+            if lines[i].startswith("    def __init__(self, root):"):
+                init_start = i
+                break
+        if init_start is None:
+            return False
+
+        # Find main guard (if __name__ == '__main__':) to cap insertion
+        main_guard_idx = None
+        for i, line in enumerate(lines):
+            if line.startswith("if __name__ == '__main__':"):
+                main_guard_idx = i
+                break
+        if main_guard_idx is None:
+            main_guard_idx = len(lines)
+
+        # Find the end of the __init__ body:
+        # stop at the next line that starts with 4 spaces (same indentation as def __init__)
+        # and is not the __init__ line itself.
+        init_end = None
+        for i in range(init_start + 1, min(len(lines), main_guard_idx)):
+            line = lines[i]
+            if line.strip() and line.startswith(" " * 4) and not line.startswith(" " * 8):
+                # This line has 4 spaces indentation (method level) and is not the __init__ line
+                init_end = i
+                break
+        if init_end is None:
+            init_end = main_guard_idx
+
+        # ----- Gather existing variable names -----
+        existing_vars = set()
+        for line in lines[init_start:init_end]:
+            match = re.match(r'        self\.(\w+) = (?:tk\.(?:IntVar|StringVar|DoubleVar|BooleanVar)|ttk\.\w+Var)\(', line)
+            if match:
+                existing_vars.add(match.group(1))
+
+        # ----- Collect variable declarations needed for new elements -----
+        new_vars = {}
+        for elem in new_elems:
+            if elem.elem_type in ("Radiobutton", "Checkbutton"):
+                var_name = elem.props.get("variable")
+                if var_name:
+                    if elem.elem_type == "Checkbutton":
+                        new_vars[var_name] = "tk.IntVar(value=0)"
+                    else:
+                        new_vars.setdefault(var_name, "tk.StringVar(value='')")
+        new_vars = {v: t for v, t in new_vars.items() if v not in existing_vars}
+
+        # ----- Generate init_lines (variable decls + widget lines + bindings) -----
+        init_lines = []
+        for var, typ in new_vars.items():
+            init_lines.append(f"        self.{var} = {typ}\n")
+
+        for elem in new_elems:
+            widget_line, place_line, extra_lines = CodeGenerator.generate_element_lines(elem, self.elements)
+            init_lines.append(widget_line + "\n")
+            for extra in extra_lines:
+                init_lines.append(extra + "\n")
+            init_lines.append(place_line + "\n")
+
+            event = DEFAULT_EVENT_MAP.get(elem.elem_type)
+            if event and event != "command" and elem.handler_code.strip():
+                var_name = f"self._elem_{elem.elem_id}"
+                method_name = f"_on_{elem.elem_type}_{elem.elem_id}"
+                init_lines.append(f"        {var_name}.bind('{event}', self.{method_name})\n")
+
+        # ----- Generate method_lines for handler methods -----
+        method_lines = []
+        for elem in new_elems:
+            if elem.handler_code.strip():
+                method_name = f"_on_{elem.elem_type}_{elem.elem_id}"
+                method_lines.append(f"    def {method_name}(self, event=None):\n")
+                code_lines = elem.handler_code.strip().splitlines() or ["pass"]
+                for cline in code_lines:
+                    method_lines.append(f"        {cline}\n" if cline.strip() else "        \n")
+                method_lines.append("\n")
+
+        # ----- Insert missing imports -----
+        required_imports = []
+        if any(e.elem_type == "Table" for e in new_elems):
+            required_imports.append("import pandas as pd")
+        last_import_idx = -1
+        for i, line in enumerate(lines):
+            if line.startswith("import ") or line.startswith("from "):
+                last_import_idx = i
+        if last_import_idx != -1:
+            existing_imports = [line.strip() for line in lines if line.startswith("import ") or line.startswith("from ")]
+            for imp in required_imports:
+                if imp not in existing_imports:
+                    lines.insert(last_import_idx + 1, imp + "\n")
+                    last_import_idx += 1
+
+        # ----- Insert init_lines into __init__ (before the next method or main guard) -----
+        if init_lines:
+            lines[init_end:init_end] = init_lines
+            # Update main_guard_idx if it shifted
+            if main_guard_idx >= init_end:
+                main_guard_idx += len(init_lines)
+
+        # ----- Insert method_lines before the main guard -----
+        if method_lines:
+            lines[main_guard_idx:main_guard_idx] = method_lines
+
+        new_code = ''.join(lines)
+        # Verify that the new elements' creation lines are present
+        for elem in new_elems:
+            if f"self._elem_{elem.elem_id} =" not in new_code:
+                return False
+
+        self.full_code = new_code
+        self._current_code = self.full_code
+        self._update_code_display()
+        return True
+
+    # ─── Incremental code removal for deleted elements ────────────────────
+    def _remove_code_for_elements(self, elems: List[DesignElement]) -> bool:
+        """
+        Attempts to surgically remove the code for the given elements from full_code.
+        Returns True on success, False if removal failed and a full regeneration is needed.
+        """
+        if not self.full_code or not elems:
+            return False
+
+        ids_to_remove = {e.elem_id for e in elems}
+        lines = self.full_code.splitlines(True)
+        indices_to_remove = set()
+
+        # ----- Step 1: Remove handler methods -----
+        i = 0
+        while i < len(lines):
+            line = lines[i]
+            match = re.match(r'    def _on_(\w+)_(\d+)\(self, event=None\):', line)
+            if match:
+                elem_id = int(match.group(2))
+                if elem_id in ids_to_remove:
+                    start = i
+                    i += 1
+                    while i < len(lines) and (lines[i].startswith(" " * 8) or lines[i].strip() == ""):
+                        i += 1
+                    for j in range(start, i):
+                        indices_to_remove.add(j)
+                    continue
+            i += 1
+
+        # ----- Step 2: Remove bind lines and widget+place blocks -----
+        for elem in elems:
+            # Find widget creation line (flexible pattern)
+            widget_pattern = rf'self\._elem_{elem.elem_id}\s*=\s*'
+            widget_idx = None
+            for i, line in enumerate(lines):
+                if re.search(widget_pattern, line):
+                    widget_idx = i
+                    break
+            if widget_idx is None:
+                return False  # not found, abort
+
+            # Find place line (flexible pattern)
+            place_pattern = rf'self\._elem_{elem.elem_id}\s*\.place\s*\('
+            place_idx = None
+            for i in range(widget_idx + 1, len(lines)):
+                if re.search(place_pattern, lines[i]):
+                    place_idx = i
+                    break
+            if place_idx is None:
+                return False
+
+            for j in range(widget_idx, place_idx + 1):
+                indices_to_remove.add(j)
+
+            # Also remove any bind lines for this elem
+            bind_pattern = rf'self\._elem_{elem.elem_id}\s*\.bind\s*\('
+            for i, line in enumerate(lines):
+                if re.search(bind_pattern, line):
+                    indices_to_remove.add(i)
+
+        # ----- Perform removal (descending order) -----
+        if indices_to_remove:
+            for idx in sorted(indices_to_remove, reverse=True):
+                del lines[idx]
+
+        self.full_code = ''.join(lines)
+        self._current_code = self.full_code
+        self._update_code_display()
+        return True
+
+    def _update_code_display(self):
+        """Update the code editor widget with current full_code."""
+        if self.full_code is None:
+            return
+        self.code_text.config(state=tk.NORMAL)
+        self.code_text.delete("1.0", tk.END)
+        self.code_text.insert(tk.END, self.full_code)
+        self.code_text.config(state=tk.DISABLED)
+
+    def _regenerate_full_code(self):
+        """Regenerate full_code from elements (loses custom code)."""
+        self.full_code = CodeGenerator.generate(
+            self.elements, self.window_title, (self.CANVAS_W, self.CANVAS_H),
+            self.CANVAS_BG, self.canvas_imports
+        )
+        self._current_code = self.full_code
+        self._update_code_display()
 
     def _move_with_keys(self, event):
         if not self.selected_elems: return
@@ -1344,7 +1637,6 @@ class GUIBuilderApp:
         self._prop_save_timer = self.root.after(500, self._save_state)
 
     def _update_code_for_moved_elements(self):
-        # For moved elements, we update their place lines in the full code.
         for elem in self.selected_elems:
             self._update_code_for_element(elem)
 
@@ -1592,7 +1884,7 @@ class GUIBuilderApp:
             self._reset_drag_state()
             self.drag_mode = "select_box"
             self.mouse_down_pos = (x, y)
-            self.selection_box_id = self.canvas.create_rectangle(x, y, x, y, dash=(4, 4), outline="blue")
+            self.selection_box_id = self.canvas.create_rectangle(x, y, x, y, dash=(4, 4), outline="#1976D2")
         
         self.canvas.focus_set()
 
@@ -1702,7 +1994,6 @@ class GUIBuilderApp:
         self.drag_mode, self.drag_elem, self.mouse_down_pos, self.elem_origs, self.active_handle = "none", None, None, {}, None
 
     def _add_element(self, elem_type: str, x: int, y: int):
-        self._invalidate_full_code()
         sx, sy = self.renderer.snap_to_grid(int(x), int(y))
         w, h = ELEMENT_TYPES[elem_type]["default_size"]
         sx = max(0, min(sx, self.CANVAS_W - w))
@@ -1722,23 +2013,27 @@ class GUIBuilderApp:
             elem.parent_id = parent.elem_id
             if parent.elem_type == "Notebook":
                 elem.parent_tab = int(parent.props.get("active_tab", 0) or 0)
-        
+
         event_name = DEFAULT_EVENT_MAP.get(elem_type)
         if event_name:
-            code = f'"""\n'
-            code += f'Event handler for {elem_type} (ID: {elem.elem_id}).\n'
-            code += f'Triggered by: {event_name}\n'
-            code += f'Access widget instance via: self._elem_{elem.elem_id}\n'
-            code += f'"""\n'
-            code += f'pass'
+            code = f'"""\nEvent handler for {elem_type} (ID: {elem.elem_id}).\nTriggered by: {event_name}\nAccess widget instance via: self._elem_{elem.elem_id}\n"""\npass'
             elem.handler_code = code
 
         self.elements.append(elem)
+
+        # Try to insert surgically; if fails, regenerate
+        if self.full_code is None:
+            self._regenerate_full_code()
+        else:
+            if not self._insert_code_for_new_elements([elem]):
+                self._regenerate_full_code()
+
         if self._is_element_visible(elem):
             self.renderer.draw_element(elem)
             self._select_element(elem, clear=True)
         else:
             self._select_element(None, clear=True)
+
         self._update_code()
         self._update_element_count()
         self._update_status(f"Added {ELEMENT_TYPES[elem_type]['display']}.")
@@ -1865,20 +2160,17 @@ class GUIBuilderApp:
 
     def _paste_elements(self, event=None):
         if not self.clipboard: return
-        self._invalidate_full_code()
         self._select_element(None, clear=True)
         
         pasted = []
         for data in self.clipboard:
             new_elem = copy.deepcopy(data)
-            
             if self.reusable_ids:
                 new_elem.elem_id = min(self.reusable_ids)
                 self.reusable_ids.remove(new_elem.elem_id)
             else:
                 new_elem.elem_id = self.next_id
                 self.next_id += 1
-                
             new_elem.x += 20
             new_elem.y += 20
             new_elem.rect_id = 0
@@ -1890,7 +2182,13 @@ class GUIBuilderApp:
             if self._is_element_visible(new_elem):
                 self.renderer.draw_element(new_elem)
             pasted.append(new_elem)
-            
+
+        if self.full_code is None:
+            self._regenerate_full_code()
+        else:
+            if not self._insert_code_for_new_elements(pasted):
+                self._regenerate_full_code()
+
         for e in pasted:
             if self._is_element_visible(e):
                 self._select_element(e, clear=False)
@@ -1917,6 +2215,13 @@ class GUIBuilderApp:
                     if child.parent_id == elem.elem_id and child not in to_delete:
                         to_delete.append(child)
         
+        # Try to remove surgically; if fails, regenerate
+        if self.full_code is not None:
+            if not self._remove_code_for_elements(to_delete):
+                self._regenerate_full_code()
+        else:
+            self._regenerate_full_code()
+
         for elem in to_delete:
             self.renderer.erase_element(elem)
             if elem in self.elements: 
@@ -1924,7 +2229,6 @@ class GUIBuilderApp:
                 self.reusable_ids.add(elem.elem_id)
                 
         self.selected_elems.clear()
-        self._invalidate_full_code()
         self._reset_drag_state()
         self._show_properties(None)
         self._update_code()
@@ -2179,15 +2483,12 @@ class GUIBuilderApp:
             pass
 
     def _update_code_for_canvas_change(self):
-        # Update the root.geometry and root.configure lines
         if self.full_code:
-            # Replace root.geometry line
             self.full_code = re.sub(
                 r'root\.geometry\([^\)]+\)',
                 f'root.geometry("{self.CANVAS_W}x{self.CANVAS_H}")',
                 self.full_code
             )
-            # Replace root.configure bg
             self.full_code = re.sub(
                 r'root\.configure\(bg=[^\)]+\)',
                 f'root.configure(bg="{self.CANVAS_BG}")',
@@ -2249,43 +2550,22 @@ class GUIBuilderApp:
                 except ValueError: elem.props[field_key] = value
 
         self.renderer.redraw_element(elem)
-        # Update the code for this element only, without invalidating full_code
         self._update_code_for_element(elem)
-        self._update_code()  # This updates the code_text widget
+        self._update_code()
         
         if hasattr(self, "_prop_save_timer"):
             self.root.after_cancel(self._prop_save_timer)
         self._prop_save_timer = self.root.after(500, self._save_state)
 
     def _update_code_for_element(self, elem: DesignElement):
-        """
-        Update the widget creation and place lines for the given element
-        in the current full_code, without touching other parts.
-        """
         if not self.full_code:
-            # If full_code is not yet generated, we need to generate it fully
             self._invalidate_full_code()
             self._update_code()
             return
 
-        # Generate the new lines for this element
         widget_line, place_line, extra_lines = CodeGenerator.generate_element_lines(elem, self.elements)
-
-        # We'll replace the lines that belong to this element.
-        # First, find the widget creation line and place line.
-        # The widget line starts with '        self._elem_{id} = '
-        # The place line starts with '        self._elem_{id}.place('
         widget_pattern = rf'        self\._elem_{elem.elem_id} = .+'
         place_pattern = rf'        self\._elem_{elem.elem_id}\.place\(.+'
-
-        # We'll also need to handle extra lines (e.g., Notebook tabs) – we'll replace them as a block.
-        # For simplicity, we'll find the block of lines that are related to this element.
-        # A safe approach: find the lines between the widget line and the place line (inclusive),
-        # and replace them with the new lines.
-        # We'll also include any extra lines that come after the place line? Actually the extra lines (like Listbox insert)
-        # come before the place line in the generator? In generate, extra lines are placed after widget creation and before place.
-        # But in the generated code, the order is: widget creation, extra lines (if any), then place line.
-        # So we can find the range from the widget line to the place line (inclusive) and replace with the new block.
 
         lines = self.full_code.splitlines(keepends=True)
         new_lines = []
@@ -2296,49 +2576,34 @@ class GUIBuilderApp:
             line = lines[i]
             if not widget_found and re.match(widget_pattern, line):
                 widget_found = True
-                # We'll replace from this line until we hit the place line for this element.
-                # We'll collect the block.
                 block_lines = []
                 block_start = i
-                # Also include extra lines that might be between widget and place.
-                # They are indented with 8 spaces (or 4? Actually they are indented with 8 because inside method).
-                # We'll gather until we find the place line or we find a line that is not indented or starts with '        self._elem_' (next element).
-                # We'll stop when we hit place line for this element or the next element creation.
                 while i < len(lines):
                     current = lines[i]
-                    # If we find the place line for this element, include it and break.
                     if re.match(place_pattern, current):
                         block_lines.append(current)
                         i += 1
                         place_found = True
                         break
-                    # If we find the start of another element, break (should not happen inside a block)
                     if re.match(r'        self\._elem_\d+ = ', current) and current != lines[block_start]:
                         break
                     block_lines.append(current)
                     i += 1
-                # Now we have the block to replace.
-                # Generate the new block: widget_line, then extra_lines, then place_line.
                 new_block = [widget_line]
                 if extra_lines:
                     new_block.extend(extra_lines)
                 new_block.append(place_line)
-                # Add each line with a newline
                 new_lines.extend([l + '\n' for l in new_block])
-                # Continue after the block we just processed.
-                # (i is already advanced past the block)
                 continue
             else:
                 new_lines.append(line)
                 i += 1
 
         if not widget_found or not place_found:
-            # If we couldn't find the lines, fall back to full regeneration
             self._invalidate_full_code()
             self._update_code()
         else:
             self.full_code = ''.join(new_lines)
-            # Also update the in-memory current code
             self._current_code = self.full_code
 
     def _pick_color(self, var: tk.StringVar):
@@ -2355,27 +2620,19 @@ class GUIBuilderApp:
             )
             self.full_code = code
         self._current_code = code
-        self.code_text.config(state=tk.NORMAL)
-        self.code_text.delete("1.0", tk.END)
-        self.code_text.insert(tk.END, code)
-        self.code_text.config(state=tk.DISABLED)
+        self._update_code_display()
 
     def _window_title_changed(self):
         if hasattr(self, "title_var"):
             self.window_title = self.title_var.get()
-            # Update the title in full_code
             if self.full_code:
-                # Replace root.title line
                 self.full_code = re.sub(
                     r'root\.title\([^\)]+\)',
                     f'root.title({json.dumps(self.window_title)})',
                     self.full_code
                 )
                 self._current_code = self.full_code
-                self.code_text.config(state=tk.NORMAL)
-                self.code_text.delete("1.0", tk.END)
-                self.code_text.insert(tk.END, self.full_code)
-                self.code_text.config(state=tk.DISABLED)
+                self._update_code_display()
             if hasattr(self, "_title_save_timer"):
                 self.root.after_cancel(self._title_save_timer)
             self._title_save_timer = self.root.after(500, self._save_state)
@@ -2468,7 +2725,6 @@ class GUIBuilderApp:
         os.close(fd)
         with open(temp_path, "w", encoding="utf-8") as f:
             f.write(code)
-            
         try:
             subprocess.Popen([sys.executable, temp_path])
             self._update_status("Running Code Preview...")
@@ -2481,7 +2737,7 @@ class GUIBuilderApp:
         top.geometry("900x680")
         top.minsize(650, 450)
 
-        editor_frame = ttk.Frame(top)
+        editor_frame = ttk.Frame(top, style="TFrame")
         editor_frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
         editor_frame.grid_rowconfigure(0, weight=1)
         editor_frame.grid_columnconfigure(0, weight=1)
@@ -2507,7 +2763,7 @@ class GUIBuilderApp:
             text_widget.tag_add("highlight", target, f"{target} lineend")
             text_widget.tag_config("highlight", background="#FFF2CC", foreground="black")
 
-        btn_frame = ttk.Frame(top)
+        btn_frame = ttk.Frame(top, style="TFrame")
         btn_frame.pack(fill=tk.X, padx=5, pady=5)
 
         def save_code():
@@ -2553,19 +2809,17 @@ class GUIBuilderApp:
             except Exception as e:
                 messagebox.showerror("Execution Error", f"Could not launch VS Code. Ensure 'code' is in PATH.\n\n{e}", parent=top)
 
-        ttk.Button(btn_frame, text="💾 Save", command=save_code).pack(side=tk.LEFT, padx=2)
-        ttk.Button(btn_frame, text="💻 Open in VS Code", command=open_in_vscode).pack(side=tk.LEFT, padx=2)
-        ttk.Button(btn_frame, text="Close", command=top.destroy).pack(side=tk.RIGHT, padx=2)
+        ttk.Button(btn_frame, text="💾 Save", command=save_code, style="Toolbar.TButton").pack(side=tk.LEFT, padx=2)
+        ttk.Button(btn_frame, text="💻 Open in VS Code", command=open_in_vscode, style="Toolbar.TButton").pack(side=tk.LEFT, padx=2)
+        ttk.Button(btn_frame, text="Close", command=top.destroy, style="Toolbar.TButton").pack(side=tk.RIGHT, padx=2)
         text_widget.bind("<Control-s>", lambda event: (save_code(), "break")[1])
         text_widget.focus_set()
 
-    # ─── Ctrl+A: select all elements on canvas ─────────────────────────────
     def _select_all(self, event=None):
-        """Select all visible elements on the canvas."""
         all_visible = self._visible_elements()
         if not all_visible:
             return
-        self._select_element(None, clear=True)  # clear current selection
+        self._select_element(None, clear=True)
         for elem in all_visible:
             self._select_element(elem, clear=False)
         self._update_status(f"Selected {len(all_visible)} elements.")
