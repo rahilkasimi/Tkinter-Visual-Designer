@@ -15,6 +15,7 @@ import sys
 import tempfile
 import os
 import ast
+import re
 from dataclasses import dataclass, field
 from typing import Optional, List, Dict, Any, Tuple
 
@@ -322,7 +323,14 @@ class DesignElement:
 
     @property
     def display_label(self) -> str:
-        label = str(self.props.get("text") or self.props.get("default_text") or self.elem_type)
+        # Fix: treat text=0 as a valid value, not as falsy
+        text_val = self.props.get("text")
+        if text_val is not None:
+            label = str(text_val)
+        elif self.props.get("default_text") is not None:
+            label = str(self.props["default_text"])
+        else:
+            label = self.elem_type
         return (label[:15] + "…") if len(label) > 15 else label
 
     def contains_point(self, px: int, py: int) -> bool:
@@ -592,6 +600,155 @@ if __name__ == "__main__":
     main()
 '''
 
+    # ─── Helper to generate lines for a single element ────────────────────
+    @staticmethod
+    def generate_element_lines(elem: DesignElement, all_elements: List[DesignElement]) -> Tuple[str, str, List[str]]:
+        """
+        Returns (widget_creation_line, place_line, extra_lines)
+        where extra_lines contain any additional lines related to this element
+        (e.g., Notebook tab frames, Listbox insertions, etc.).
+        """
+        by_id = {e.elem_id: e for e in all_elements}
+        widget_line = ""
+        place_line = ""
+        extra_lines: List[str] = []
+
+        var_name = f"self._elem_{elem.elem_id}"
+        widget_class = ELEMENT_TYPES[elem.elem_type]["widget"]
+        props = copy.deepcopy(elem.props)
+
+        # Determine if this element has a command binding
+        bindings = []
+        for e in all_elements:
+            if e.handler_code.strip():
+                event = DEFAULT_EVENT_MAP.get(e.elem_type)
+                if event:
+                    bindings.append((e, event, f"self._elem_{e.elem_id}"))
+
+        listbox_items = props.pop("items", []) if elem.elem_type == "Listbox" else []
+        notebook_tabs = props.pop("tabs", ["Tab 1", "Tab 2"]) if elem.elem_type == "Notebook" else []
+        if elem.elem_type == "Notebook":
+            props.pop("active_tab", None)
+
+        for b_elem, b_event, _ in bindings:
+            if b_elem == elem and b_event == "command":
+                props["command"] = f"self._on_{elem.elem_type}_{elem.elem_id}"
+
+        if props.get("textvariable") == "":
+            props.pop("textvariable", None)
+        def_val = props.pop("default_value", None)
+
+        prop_strs = []
+        for k, v in props.items():
+            if k == "variable" and v:
+                prop_strs.append(f"variable=self.{v}")
+            elif k == "command" and isinstance(v, str) and v.startswith("self."):
+                prop_strs.append(f"{k}={v}")
+            elif k == "values" and isinstance(v, list):
+                prop_strs.append(f"{k}={repr(v)}")
+            elif k in ("from_", "to", "onvalue", "offvalue"):
+                prop_strs.append(f"{k}={v}")
+            elif isinstance(v, str):
+                prop_strs.append(f"{k}={json.dumps(v)}")
+            elif isinstance(v, (int, float)):
+                prop_strs.append(f"{k}={v}")
+            else:
+                prop_strs.append(f"{k}={repr(v)}")
+        prop_str = (", " + ", ".join(prop_strs)) if prop_strs else ""
+
+        parent_name = "root"
+        rel_x, rel_y = elem.x, elem.y
+        if elem.parent_id is not None and elem.parent_id in by_id:
+            parent_elem = by_id[elem.parent_id]
+            if parent_elem.elem_type == "Notebook":
+                tab_idx = elem.parent_tab if elem.parent_tab is not None else parent_elem.props.get("active_tab", 0)
+                tabs_count = len(parent_elem.props.get("tabs", ["Tab 1"])) or 1
+                tab_idx = max(0, min(int(tab_idx or 0), tabs_count - 1))
+                parent_name = f"self._elem_{parent_elem.elem_id}_tab_{tab_idx}"
+            else:
+                parent_name = f"self._elem_{parent_elem.elem_id}"
+            rel_x = elem.x - parent_elem.x
+            rel_y = elem.y - parent_elem.y
+
+        if elem.elem_type == "Table":
+            table_file = elem.props.get("file", "")
+            table_sheet = elem.props.get("sheet", 0)
+            columns_csv = elem.props.get("columns", "")
+            table_height = int(elem.props.get("height", 8) or 8)
+
+            lines = []
+            lines.append(f"        columns = []")
+            if columns_csv:
+                cols = [c.strip() for c in columns_csv.split(",") if c.strip()]
+                lines.append(f"        columns = {repr(cols)}")
+            lines.append(f"        {var_name} = ttk.Treeview({parent_name}, columns=columns, show='headings', height={table_height})")
+            lines.append(f"        for col in columns:")
+            lines.append(f"            {var_name}.heading(col, text=col)")
+            lines.append(f"            {var_name}.column(col, width=100, anchor='w')")
+            if table_file:
+                lines.append(f"        try:")
+                lines.append(f"            import pandas as pd")
+                if str(table_file).lower().endswith(('.xlsx', '.xls')):
+                    lines.append(f"            df = pd.read_excel({json.dumps(table_file)}, sheet_name={json.dumps(table_sheet) if table_sheet else 0})")
+                else:
+                    lines.append(f"            df = pd.read_csv({json.dumps(table_file)})")
+                lines.append(f"            if not columns:")
+                lines.append(f"                columns = list(df.columns)")
+                lines.append(f"                for col in columns:")
+                lines.append(f"                    {var_name}.heading(col, text=col)")
+                lines.append(f"                    {var_name}.column(col, width=100, anchor='w')")
+                lines.append(f"            for _, row in df.head(10).iterrows():")
+                lines.append(f"                {var_name}.insert('', 'end', values=list(row))")
+                lines.append(f"        except Exception as e:")
+                lines.append(f"            print('Table load error:', e)")
+            widget_line = "\n".join(lines)
+            place_line = f"        {var_name}.place(x={rel_x}, y={rel_y}, width={elem.canvas_w}, height={elem.canvas_h})"
+            return widget_line, place_line, []
+
+        # Normal widget creation
+        widget_line = f"        {var_name} = {widget_class}({parent_name}{prop_str})"
+
+        # Handle Notebook special lines
+        if elem.elem_type == "Notebook":
+            if not notebook_tabs:
+                notebook_tabs = ["Tab 1"]
+            for i, tab_title in enumerate(notebook_tabs):
+                extra_lines.append(f"        {var_name}_tab_{i} = ttk.Frame({var_name})")
+                extra_lines.append(f"        {var_name}.add({var_name}_tab_{i}, text={json.dumps(str(tab_title))})")
+                extra_lines.append(f"        self._elem_{elem.elem_id}_tab_{i} = {var_name}_tab_{i}")
+            active_tab = int(elem.props.get("active_tab", 0) or 0)
+            active_tab = max(0, min(active_tab, len(notebook_tabs) - 1))
+            extra_lines.append(f"        {var_name}.select({active_tab})")
+
+        # Handle default value
+        if def_val is not None and str(def_val).strip() != "":
+            if elem.elem_type == "Checkbutton":
+                var_name_chk = copy.deepcopy(elem.props).get("variable")
+                if var_name_chk:
+                    extra_lines.append(f"        self.{var_name_chk}.set({json.dumps(def_val)})")
+                elif str(def_val).lower() in ("1", "true", "yes"):
+                    extra_lines.append(f"        {var_name}.select()")
+            elif elem.elem_type in ("Entry", "Spinbox"):
+                extra_lines.append(f"        {var_name}.insert(0, {json.dumps(str(def_val))})")
+            elif elem.elem_type == "Combobox":
+                extra_lines.append(f"        {var_name}.set({json.dumps(str(def_val))})")
+            elif elem.elem_type == "Scale":
+                try:
+                    num_val = float(def_val) if "." in str(def_val) else int(def_val)
+                    extra_lines.append(f"        {var_name}.set({num_val})")
+                except (ValueError, TypeError):
+                    pass
+
+        # Listbox items
+        if elem.elem_type == "Listbox" and listbox_items:
+            for item in listbox_items:
+                extra_lines.append(f"        {var_name}.insert('end', {json.dumps(item)})")
+
+        # Place line
+        place_line = f"        {var_name}.place(x={rel_x}, y={rel_y}, width={elem.canvas_w}, height={elem.canvas_h})"
+
+        return widget_line, place_line, extra_lines
+
 # ─── CanvasRenderer ─────────────────────────────────────────────────────────
 
 class CanvasRenderer:
@@ -646,8 +803,9 @@ class CanvasRenderer:
             elem.handle_ids["DEL_L1"] = hid_l1
             elem.handle_ids["DEL_L2"] = hid_l2
 
-        id_lbl_bg = self.canvas.create_rectangle(x + w//2 - 15, y - 22, x + w//2 + 15, y - 8, fill="#FF6B35", outline="white", tags=("handle", f"id_{elem.elem_id}"))
-        id_lbl = self.canvas.create_text(x + w//2, y - 15, text=f"ID:{elem.elem_id}", fill="white", font=("Segoe UI", 8, "bold"), tags=("handle", f"id_{elem.elem_id}"))
+        
+        id_lbl_bg = self.canvas.create_rectangle(x + w//2 - 15, y - 17, x + w//2 + 15, y - 3, fill="#FF6B35", outline="white", tags=("handle", f"id_{elem.elem_id}"))
+        id_lbl = self.canvas.create_text(x + w//2, y - 12, text=f"ID:{elem.elem_id}", fill="white", font=("Segoe UI", 8, "bold"), tags=("handle", f"id_{elem.elem_id}"))
         elem.handle_ids["ID_BG"] = id_lbl_bg
         elem.handle_ids["ID"] = id_lbl
 
@@ -937,6 +1095,9 @@ class GUIBuilderApp:
         self.root.bind("<Left>", self._move_with_keys)
         self.root.bind("<Right>", self._move_with_keys)
 
+        # Ctrl+A for canvas selection (on canvas itself)
+        self.canvas.bind("<Control-a>", self._select_all)
+
         self._update_code()
         self._update_element_count()
         self._update_status("Ready — pick a tool and click canvas, or double-click elements to edit code.")
@@ -975,7 +1136,8 @@ class GUIBuilderApp:
         self.canvas_scroll_x = ttk.Scrollbar(center_frame, orient=tk.HORIZONTAL)
         self.canvas = tk.Canvas(
             center_frame, bg=self.CANVAS_BG, width=self.CANVAS_W, height=self.CANVAS_H,
-            yscrollcommand=self.canvas_scroll_y.set, xscrollcommand=self.canvas_scroll_x.set
+            yscrollcommand=self.canvas_scroll_y.set, xscrollcommand=self.canvas_scroll_x.set,
+            takefocus=1          # <-- ADD THIS
         )
         self.canvas_scroll_y.config(command=self.canvas.yview)
         self.canvas_scroll_x.config(command=self.canvas.xview)
@@ -994,6 +1156,9 @@ class GUIBuilderApp:
         self.canvas.bind("<ButtonRelease-1>", self._on_canvas_release)
         self.canvas.bind("<Double-Button-1>", self._on_canvas_double_click)
 
+        # # Ensure Ctrl+A works on canvas
+        # self.canvas.bind("<Control-a>", self._select_all)   # already present, keep it
+        
         self.prop_frame = ttk.Frame(self.main_paned, width=300)
         self.prop_frame.pack_propagate(False)
         self.main_paned.add(self.prop_frame, weight=0)
@@ -1171,12 +1336,17 @@ class GUIBuilderApp:
             elem.y = max(0, min(elem.y + dy, self.CANVAS_H - elem.canvas_h))
             self.renderer.redraw_element(elem)
             
-        self._invalidate_full_code()
+        self._update_code_for_moved_elements()
         self._update_code()
         
         if hasattr(self, "_prop_save_timer"):
             self.root.after_cancel(self._prop_save_timer)
         self._prop_save_timer = self.root.after(500, self._save_state)
+
+    def _update_code_for_moved_elements(self):
+        # For moved elements, we update their place lines in the full code.
+        for elem in self.selected_elems:
+            self._update_code_for_element(elem)
 
     def _invalidate_full_code(self):
         self.full_code = None
@@ -1423,6 +1593,8 @@ class GUIBuilderApp:
             self.drag_mode = "select_box"
             self.mouse_down_pos = (x, y)
             self.selection_box_id = self.canvas.create_rectangle(x, y, x, y, dash=(4, 4), outline="blue")
+        
+        self.canvas.focus_set()
 
     def _find_element_at(self, x: int, y: int) -> Optional[DesignElement]:
         for elem in reversed(self._visible_elements()):
@@ -1455,6 +1627,7 @@ class GUIBuilderApp:
                             child.y = max(0, min(coy + dy, self.CANVAS_H - child.canvas_h))
                             self.renderer.redraw_element(child)
                             moved_ids.add(child.elem_id)
+            self._update_code_for_moved_elements()
             self._update_code()
 
         elif self.drag_mode == "resize":
@@ -1464,6 +1637,7 @@ class GUIBuilderApp:
                     nx, ny, nw, nh = self._compute_resize(self.active_handle, ox, oy, ow, oh, cum_dx, cum_dy)
                     elem.x, elem.y, elem.canvas_w, elem.canvas_h = nx, ny, nw, nh
                     self.renderer.redraw_element(elem)
+            self._update_code_for_moved_elements()
             self._update_code()
 
         elif self.drag_mode == "select_box" and self.selection_box_id:
@@ -1496,11 +1670,11 @@ class GUIBuilderApp:
                         elem.parent_tab = int(parent.props.get("active_tab", 0) or 0)
                     elif old_parent != elem.parent_id:
                         elem.parent_tab = None
+                self._update_code_for_moved_elements()
                 self._update_code()
             else:
                 self._just_resized = True
 
-            self._invalidate_full_code()
             self._reorder_elements()
             self._save_state()
 
@@ -1678,7 +1852,7 @@ class GUIBuilderApp:
                     elem.props[field_key] = value
                 self.renderer.redraw_element(elem)
 
-        self._invalidate_full_code()
+        self._update_code_for_moved_elements()
         self._update_code()
         if hasattr(self, "_prop_save_timer"):
             self.root.after_cancel(self._prop_save_timer)
@@ -1996,13 +2170,32 @@ class GUIBuilderApp:
             if var_bg: self.CANVAS_BG = var_bg.get()
             self.canvas.config(width=self.CANVAS_W, height=self.CANVAS_H, bg=self.CANVAS_BG, scrollregion=(0, 0, self.CANVAS_W, self.CANVAS_H))
             self.renderer.draw_grid(self.CANVAS_W, self.CANVAS_H)
-            self._invalidate_full_code()
+            self._update_code_for_canvas_change()
             self._update_code()
             if hasattr(self, "_prop_save_timer"):
                 self.root.after_cancel(self._prop_save_timer)
             self._prop_save_timer = self.root.after(500, self._save_state)
         except ValueError:
             pass
+
+    def _update_code_for_canvas_change(self):
+        # Update the root.geometry and root.configure lines
+        if self.full_code:
+            # Replace root.geometry line
+            self.full_code = re.sub(
+                r'root\.geometry\([^\)]+\)',
+                f'root.geometry("{self.CANVAS_W}x{self.CANVAS_H}")',
+                self.full_code
+            )
+            # Replace root.configure bg
+            self.full_code = re.sub(
+                r'root\.configure\(bg=[^\)]+\)',
+                f'root.configure(bg="{self.CANVAS_BG}")',
+                self.full_code
+            )
+        else:
+            self._invalidate_full_code()
+            self._update_code()
 
     def _on_live_prop_change(self, row):
         if not self.selected_elems or len(self.selected_elems) > 1 or not row.get("visible"): return
@@ -2055,13 +2248,98 @@ class GUIBuilderApp:
                 try: elem.props[field_key] = float(value)
                 except ValueError: elem.props[field_key] = value
 
-        self._invalidate_full_code()
         self.renderer.redraw_element(elem)
-        self._update_code()
+        # Update the code for this element only, without invalidating full_code
+        self._update_code_for_element(elem)
+        self._update_code()  # This updates the code_text widget
         
         if hasattr(self, "_prop_save_timer"):
             self.root.after_cancel(self._prop_save_timer)
         self._prop_save_timer = self.root.after(500, self._save_state)
+
+    def _update_code_for_element(self, elem: DesignElement):
+        """
+        Update the widget creation and place lines for the given element
+        in the current full_code, without touching other parts.
+        """
+        if not self.full_code:
+            # If full_code is not yet generated, we need to generate it fully
+            self._invalidate_full_code()
+            self._update_code()
+            return
+
+        # Generate the new lines for this element
+        widget_line, place_line, extra_lines = CodeGenerator.generate_element_lines(elem, self.elements)
+
+        # We'll replace the lines that belong to this element.
+        # First, find the widget creation line and place line.
+        # The widget line starts with '        self._elem_{id} = '
+        # The place line starts with '        self._elem_{id}.place('
+        widget_pattern = rf'        self\._elem_{elem.elem_id} = .+'
+        place_pattern = rf'        self\._elem_{elem.elem_id}\.place\(.+'
+
+        # We'll also need to handle extra lines (e.g., Notebook tabs) – we'll replace them as a block.
+        # For simplicity, we'll find the block of lines that are related to this element.
+        # A safe approach: find the lines between the widget line and the place line (inclusive),
+        # and replace them with the new lines.
+        # We'll also include any extra lines that come after the place line? Actually the extra lines (like Listbox insert)
+        # come before the place line in the generator? In generate, extra lines are placed after widget creation and before place.
+        # But in the generated code, the order is: widget creation, extra lines (if any), then place line.
+        # So we can find the range from the widget line to the place line (inclusive) and replace with the new block.
+
+        lines = self.full_code.splitlines(keepends=True)
+        new_lines = []
+        widget_found = False
+        place_found = False
+        i = 0
+        while i < len(lines):
+            line = lines[i]
+            if not widget_found and re.match(widget_pattern, line):
+                widget_found = True
+                # We'll replace from this line until we hit the place line for this element.
+                # We'll collect the block.
+                block_lines = []
+                block_start = i
+                # Also include extra lines that might be between widget and place.
+                # They are indented with 8 spaces (or 4? Actually they are indented with 8 because inside method).
+                # We'll gather until we find the place line or we find a line that is not indented or starts with '        self._elem_' (next element).
+                # We'll stop when we hit place line for this element or the next element creation.
+                while i < len(lines):
+                    current = lines[i]
+                    # If we find the place line for this element, include it and break.
+                    if re.match(place_pattern, current):
+                        block_lines.append(current)
+                        i += 1
+                        place_found = True
+                        break
+                    # If we find the start of another element, break (should not happen inside a block)
+                    if re.match(r'        self\._elem_\d+ = ', current) and current != lines[block_start]:
+                        break
+                    block_lines.append(current)
+                    i += 1
+                # Now we have the block to replace.
+                # Generate the new block: widget_line, then extra_lines, then place_line.
+                new_block = [widget_line]
+                if extra_lines:
+                    new_block.extend(extra_lines)
+                new_block.append(place_line)
+                # Add each line with a newline
+                new_lines.extend([l + '\n' for l in new_block])
+                # Continue after the block we just processed.
+                # (i is already advanced past the block)
+                continue
+            else:
+                new_lines.append(line)
+                i += 1
+
+        if not widget_found or not place_found:
+            # If we couldn't find the lines, fall back to full regeneration
+            self._invalidate_full_code()
+            self._update_code()
+        else:
+            self.full_code = ''.join(new_lines)
+            # Also update the in-memory current code
+            self._current_code = self.full_code
 
     def _pick_color(self, var: tk.StringVar):
         color = colorchooser.askcolor(initialcolor=var.get() or "#ffffff", title="Select Color")
@@ -2075,6 +2353,7 @@ class GUIBuilderApp:
                 self.elements, self.window_title, (self.CANVAS_W, self.CANVAS_H), 
                 self.CANVAS_BG, self.canvas_imports
             )
+            self.full_code = code
         self._current_code = code
         self.code_text.config(state=tk.NORMAL)
         self.code_text.delete("1.0", tk.END)
@@ -2084,8 +2363,19 @@ class GUIBuilderApp:
     def _window_title_changed(self):
         if hasattr(self, "title_var"):
             self.window_title = self.title_var.get()
-            self._invalidate_full_code()
-            self._update_code()
+            # Update the title in full_code
+            if self.full_code:
+                # Replace root.title line
+                self.full_code = re.sub(
+                    r'root\.title\([^\)]+\)',
+                    f'root.title({json.dumps(self.window_title)})',
+                    self.full_code
+                )
+                self._current_code = self.full_code
+                self.code_text.config(state=tk.NORMAL)
+                self.code_text.delete("1.0", tk.END)
+                self.code_text.insert(tk.END, self.full_code)
+                self.code_text.config(state=tk.DISABLED)
             if hasattr(self, "_title_save_timer"):
                 self.root.after_cancel(self._title_save_timer)
             self._title_save_timer = self.root.after(500, self._save_state)
@@ -2268,6 +2558,17 @@ class GUIBuilderApp:
         ttk.Button(btn_frame, text="Close", command=top.destroy).pack(side=tk.RIGHT, padx=2)
         text_widget.bind("<Control-s>", lambda event: (save_code(), "break")[1])
         text_widget.focus_set()
+
+    # ─── Ctrl+A: select all elements on canvas ─────────────────────────────
+    def _select_all(self, event=None):
+        """Select all visible elements on the canvas."""
+        all_visible = self._visible_elements()
+        if not all_visible:
+            return
+        self._select_element(None, clear=True)  # clear current selection
+        for elem in all_visible:
+            self._select_element(elem, clear=False)
+        self._update_status(f"Selected {len(all_visible)} elements.")
 
 
 if __name__ == "__main__":
