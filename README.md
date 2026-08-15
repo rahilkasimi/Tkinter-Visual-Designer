@@ -30,7 +30,7 @@ A full-featured drag-and-drop GUI builder and Python code generator built using 
 * **Design File Persistence**: Save and reload project files using standard JSON (`.tvd`) format.
 
 
-* **Full Editing Controls**: Complete support for Undo/Redo (`Ctrl+Z` / `Ctrl+Y`), multi-element selection, arrow key nudging, and Copy/Paste clipboard functionality (`Ctrl+C` / `Ctrl+V`).
+* **Full Editing Controls**: Complete support for Undo/Redo (`Ctrl+Z` / `Ctrl+Y`), multi-element selection, All element selection (`Ctrl+A`) arrow key nudging, and Copy/Paste clipboard functionality (`Ctrl+C` / `Ctrl+V`).
 
 
 
@@ -144,7 +144,7 @@ pip install pandas openpyxl
 Run the Python script directly:
 
 ```bash
-python tkinter_designer.py
+python gui_builder.py
 
 ```
 
@@ -158,6 +158,9 @@ python tkinter_designer.py
 
  |
 | **Multi-Select** | `Ctrl` + Click | Adds or removes individual widgets to the selection group.
+
+|
+| **Select All Elements** | `Ctrl + A` | Select all elements on canvas.
 
  |
 | **Box Select** | Click & Drag on Canvas | Creates a drag box to select multiple widgets simultaneously.
