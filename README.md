@@ -1,242 +1,292 @@
-# Tkinter Visual GUI Designer
+# Tkinter Visual Designer
 
-A full-featured drag-and-drop GUI builder and Python code generator built using standard Tkinter. This application allows developers to visually design user interfaces, modify widget properties, manage container hierarchies, and generate clean object-oriented Python code. This application is still under development and it is not a finished product.
-
----
-
-## 🚀 Key Features
-
-* **Visual Drag-and-Drop Canvas**: Easily position and resize widgets on an interactive canvas with snap-to-grid support.
-
-
-* **Rich Component Catalogue**: Supports 19 standard Tkinter and TTK widgets split across Input, Display, and Container categories.
-
-
-* **Container Hierarchy & Nesting**: Nest components directly inside `Frame`, `LabelFrame`, `PanedWindow`, and tabbed `Notebook` widgets.
-
-
-* **Property Inspector**: Edit widget properties in real time, including text, geometry, colors (via integrated color picker), and fonts.
-
-
-* **Live Code Generator**: Generates standalone, structured Python code using an object-oriented `MainApplication` class pattern.
-
-
-* **Interactive Event Handlers**: Assign event bindings and write custom Python logic for widgets directly within the app.
-
-
-* **Tabular Data Preview**: View and load Excel (`.xlsx`, `.xls`) or CSV datasets inside `ttk.Treeview` tables using Pandas integration.
-
-
-* **Design File Persistence**: Save and reload project files using standard JSON (`.tvd`) format.
-
-
-* **Full Editing Controls**: Complete support for Undo/Redo (`Ctrl+Z` / `Ctrl+Y`), multi-element selection, All element selection (`Ctrl+A`) arrow key nudging, and Copy/Paste clipboard functionality (`Ctrl+C` / `Ctrl+V`).
-
-
+A comprehensive drag‑and‑drop GUI builder for Tkinter/CustomTkinter applications. Design interfaces visually, generate production‑ready Python code, and preview your work in real time—all without writing a single line of code manually.
 
 ---
 
-## 📦 Supported Widgets Catalogue
+## 📋 Overview
 
-The designer provides built-in support for the following UI components:
+Tkinter Visual Designer is a complete WYSIWYG editor for building Tkinter and CustomTkinter applications. It provides a visual canvas where you can place, move, resize, and configure UI components through an intuitive point‑and‑click interface, while automatically generating the underlying Python code.
 
-### ✍️ Input Controls
-
-* **Label**: Static text display widget with font and alignment customization.
-
-
-* **Entry**: Single-line text input field supporting password masking and variable binding.
-
-
-* **Button**: Action trigger button with custom command handlers.
-
-
-* **Radiobutton**: Radio option selector linked to string or integer variables.
-
-
-* **Checkbutton**: Toggle checkbox supporting integer or boolean variable binding.
-
-
-* **Scale**: Horizontal or vertical slider control with range and resolution parameters.
-
-
-* **Combobox**: TTK dropdown selection menu.
-
-
-* **Spinbox**: Numerical range input field with step arrows.
-
-
-
-### 📝 Display Controls
-
-* **Listbox**: Multi-item scrollable list selector.
-
-
-* **Text**: Multi-line text editing field with custom word-wrapping modes.
-
-
-* **Canvas**: Standard drawing area widget.
-
-
-* **Progressbar**: Progress bar supporting horizontal and vertical orientations.
-
-
-* **Scrollbar**: Standard scrollbar component.
-
-
-* **Separator**: Visual dividing line for UI sections.
-
-
-* **Table**: Data view treeview component with optional CSV/Excel file loading.
-
-
-
-### 🖼️ Containers
-
-* **Frame**: Structural background container with customizable border relief styles.
-
-
-* **LabelFrame**: Bordered container box with an integrated title label.
-
-
-* **Notebook**: Tabbed container interface allowing multi-page tab management.
-
-
-* **PanedWindow**: Split-pane container supporting horizontal and vertical resizable panes.
-
-
+Whether you're prototyping a desktop application, teaching Python GUI development, or simply want to accelerate your workflow, this tool eliminates the tedious boilerplate of manual layout coding.
 
 ---
 
-## ⚙️ Requirements & Installation
+## ✨ Features
+
+### Core Capabilities
+
+- **Visual Drag‑and‑Drop Design** – Place widgets directly onto the canvas, move them freely, and resize using intuitive handles.
+- **Live Code Generation** – Every design change instantly updates the generated Python code in the live preview panel.
+- **Full Undo/Redo Support** – Ctrl+Z and Ctrl+Y work seamlessly across all design actions.
+- **Copy/Paste Elements** – Duplicate widgets or entire containers with Ctrl+C and Ctrl+V.
+- **Multi‑Select & Group Operations** – Select multiple elements and move or resize them together.
+- **Snap‑to‑Grid** – Elements automatically align to a configurable grid for precise layouts.
+
+### Widget Support
+
+The toolbox includes a wide range of both standard Tkinter and modern CustomTkinter widgets:
+
+| Category | Widgets |
+|----------|---------|
+| **Input** | Label, Entry, Button, Radiobutton, Checkbutton, Scale (Slider), Combobox, Spinbox, Listbox, Text (Multiline) |
+| **Display** | Canvas, Progressbar, Scrollbar, Separator, Table (Excel/CSV), Image |
+| **Containers** | Frame, LabelFrame, Notebook (Tabs), PanedWindow |
+
+Each widget comes with sensible defaults and a full property inspector for customization.
+
+### Property Inspector
+
+Select any element to view and edit its properties in real time:
+- Text content, fonts, colors, and dimensions
+- Widget‑specific options (e.g., orientation, range values, tab lists)
+- Color picker with RGB display
+- Font selector with live preview of available system fonts
+- Image and file pickers for Table and Image widgets
+
+### Code Generation
+
+- Generates clean, well‑structured Python code using CustomTkinter.
+- Supports both `tkinter` and `customtkinter` widgets.
+- Automatically includes necessary imports (`pandas` for tables, `PIL` for images).
+- Injects a `_ToolTip` helper class for widgets with tooltips.
+- Event handler stubs are created for widgets that support commands/bindings.
+
+### Preview & Export
+
+- **Run Preview** – Launch a temporary preview of your design with a single click.
+- **Copy Code** – Copy the entire generated script to your clipboard.
+- **Open in VS Code** – Export the code to a temporary file and open it in VS Code for further editing.
+- **Save/Load Designs** – Project files use the `.tvd` (Tkinter Visual Design) format for round‑trip editing.
+
+### Additional Features
+
+- **Zoom** – Ctrl+Mouse Wheel to zoom in/out on the canvas.
+- **Keyboard Shortcuts** – Arrow keys to nudge selected elements; Ctrl+A to select all.
+- **Container Nesting** – Drag elements into Frames, LabelFrames, or Notebook tabs; parent‑child relationships are preserved in the generated code.
+- **Notebook Tab Management** – Add/remove tabs directly from the property inspector.
+- **Syntax‑Checked Code Editor** – Double‑click any element to open a dedicated code editor with syntax highlighting and real‑time error checking.
+
+---
+
+## 🚀 Installation
 
 ### Prerequisites
 
-* Python 3.8+
+- Python 3.7 or higher
+- pip (Python package installer)
 
-
-* Tkinter (included in standard Python installations on Windows/macOS)
-
-
-* `pandas` and `openpyxl` (optional, required only if loading Excel files into Table widgets)
-
-
-
-### Installation
-
-Clone or download the source code file:
+### Dependencies
 
 ```bash
-git clone https://github.com/your-username/tkinter-visual-designer.git
-cd tkinter-visual-designer
-
+pip install customtkinter pillow pandas
 ```
 
-Install optional dependencies for Excel table imports:
-
-```bash
-pip install pandas openpyxl
-
-```
+> **Note:** `customtkinter` is required for the modern widget set. `pillow` enables image support, and `pandas` is needed for Table (Excel/CSV) functionality.
 
 ### Running the Application
 
-Run the Python script directly:
+Clone the repository and run:
 
 ```bash
 python gui_builder.py
-
 ```
 
 ---
 
-## ⌨️ Shortcuts & Controls
+## 🎮 Usage Guide
 
-| Action | Shortcut / Mouse Gesture | Description |
-| --- | --- | --- |
-| **Add Widget** | Click Tool → Click Canvas | Selects a component from the toolbox and places it onto the canvas grid.
+### Getting Started
 
- |
-| **Multi-Select** | `Ctrl` + Click | Adds or removes individual widgets to the selection group.
+1. **Launch the application** – The main window opens with a blank canvas, toolbox, and property inspector.
 
-|
-| **Select All Elements** | `Ctrl + A` | Select all elements on canvas.
+2. **Select a tool** – Click any widget in the toolbox (e.g., "Button", "Label", "Frame").
 
- |
-| **Box Select** | Click & Drag on Canvas | Creates a drag box to select multiple widgets simultaneously.
+3. **Place the widget** – Click anywhere on the canvas to drop the selected widget.
 
- |
-| **Move / Nudge** | Arrow Keys | Nudges selected widgets by 1 px (or 10 px when holding `Shift`).
+4. **Move or resize** – Click and drag to reposition; use the corner/side handles to resize.
 
- |
-| **Copy Elements** | `Ctrl + C` | Copies selected elements to the internal clipboard.
+5. **Edit properties** – Select the widget and adjust its properties in the right panel.
 
- |
-| **Paste Elements** | `Ctrl + V` | Pastes copied elements onto the active design canvas.
+6. **View the code** – Click "Toggle Code" to reveal the live‑generated Python script.
 
- |
-| **Delete** | `Delete` key / Red 'X' | Deletes selected widgets and any contained child elements.
+7. **Run your design** – Click "Run Preview" to launch your application in a separate window.
 
- |
-| **Undo** | `Ctrl + Z` | Reverts the last layout or property change.
+### Keyboard Shortcuts
 
- |
-| **Redo** | `Ctrl + Y` | Reapplies the previously undone action.
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl+Z` | Undo |
+| `Ctrl+Y` | Redo |
+| `Ctrl+C` | Copy selected elements |
+| `Ctrl+V` | Paste elements |
+| `Delete` | Delete selected elements |
+| `Ctrl+A` | Select all visible elements |
+| `Arrow Keys` | Nudge selected elements (1px or 10px with Shift held) |
+| `Ctrl+Mouse Wheel` | Zoom canvas in/out |
+| `Ctrl+S` | Save design |
+| `Ctrl+O` | Load design |
+| `Ctrl+N` | New design |
 
- |
-| **Save Project** | `Ctrl + S` | Saves the full project to a `.tvd` JSON file.
+### Working with Containers
 
- |
-| **Load Project** | `Ctrl + O` | Opens an existing `.tvd` project file.
+- **Frames/LabelFrames** – Drag widgets into them; they become children and are positioned relative to the container.
+- **Notebook (Tabs)** – Drag widgets onto a specific tab; they will appear only when that tab is active.
+- **Parent/Child relationships** are automatically tracked and reflected in the generated code.
 
- |
-| **New Design** | `Ctrl + N` | Resets the workspace for a new design layout.
+### Adding Images
 
- |
-| **Code Editor** | Double-Click Widget | Opens the custom code editor window for the widget.
+1. Place an **Image** widget on the canvas.
+2. In the property inspector, click **Browse** next to the "Image File" field.
+3. Select an image file (PNG, JPG, JPEG, GIF, BMP, ICO).
+4. The image is copied to a `resources/` folder and embedded as a relative path.
+5. The widget displays a thumbnail preview on the canvas.
 
- |
+### Using the Table Widget
+
+1. Place a **Table** widget on the canvas.
+2. In the property inspector:
+   - **Excel/CSV File** – Browse to select a `.xlsx`, `.xls`, or `.csv` file.
+   - **Sheet Name** – (For Excel) Specify the sheet name or index.
+   - **Columns** – Comma‑separated list of column names (auto‑detected if left blank).
+   - **Rows Visible** – Number of rows to display.
+3. The generated code will load and display the first 10 rows of the data.
+
+### Customizing Event Handlers
+
+1. **Double‑click** any widget on the canvas to open the code editor.
+2. The editor highlights the event handler method for that widget.
+3. Write your custom logic inside the method body.
+4. Click **Save** – the code is integrated back into the full script.
+5. Click **Open in VS Code** to edit in your preferred editor.
 
 ---
 
-## 📄 Project File Format (`.tvd`)
+## 🏗️ Architecture
 
-Project files are saved as structured JSON documents (`.tvd`) containing all canvas element definitions, parent-child container IDs, geometry coordinates, widget properties, and custom Python event logic.
+The application is structured around several key components:
+
+### `DesignElement`
+
+A dataclass representing each widget on the canvas. Stores:
+- Element type, position (`x`, `y`), dimensions (`canvas_w`, `canvas_h`)
+- Properties dictionary (font, color, text, etc.)
+- Parent/child relationships (`parent_id`, `parent_tab`)
+- Generated handler code
+- Canvas rendering IDs for efficient redraws
+
+### `CanvasRenderer`
+
+Handles all visual rendering on the Tkinter canvas:
+- Draws each widget type with appropriate styling (flat, sunken, raised, groove)
+- Manages selection handles and resize controls
+- Supports zoom and grid rendering
+- Efficient move operations using batched canvas translations
+
+### `CodeGenerator`
+
+Transforms the list of `DesignElement` objects into executable Python code:
+- Orders elements by container depth for proper stacking
+- Maps Tkinter properties to CustomTkinter equivalents where available
+- Handles widget‑specific quirks (Notebook tabs, Progressbar values, Table loading)
+- Injects tooltip helper class when needed
+- Generates complete, runnable scripts
+
+### `GUIBuilderApp`
+
+The main application controller:
+- Manages the UI (toolbox, canvas, property inspector, code panel)
+- Handles user interactions (drag‑and‑drop, selection, resizing)
+- Maintains undo/redo state
+- Synchronizes design changes with code generation
+- Manages file I/O (save/load `.tvd` files)
 
 ---
 
-## 💻 Generated Code Structure
+## 🛠️ Extending the Tool
 
-The visual designer outputs modular Python code following strict object-oriented best practices:
+### Adding a New Widget Type
 
-```python
-"""Generated by Tkinter Visual Designer."""
+1. Add an entry to `ELEMENT_TYPES` with display name, default size, and default properties.
+2. Add property fields to `PROPERTY_FIELDS` for the inspector.
+3. (Optional) Add a rendering method in `CanvasRenderer` (e.g., `_draw_mywidget`).
+4. Map the widget to a Tkinter/CustomTkinter class in `CTK_WIDGET_MAP`.
+5. Update `CTK_PROP_MAP` for property name mappings if needed.
 
-import tkinter as tk
-from tkinter import ttk
+### Customizing the Toolbox
 
-class MainApplication:
-    def __init__(self, root):
-        self.root = root
-        root.title("My Application")
-        root.geometry("800x600")
-        root.configure(bg="#FAFAFA")
+The toolbox is dynamically built from `ELEMENT_TYPES`. Categories are inferred from the `"category"` field. Toggle between compact (icon‑only) and expanded (icon + label) modes using the "⊞ Icons" / "☰ Labels" button.
 
-        # Widget Instantiation & Placement
-        self._elem_1 = tk.Button(root, text="Click Me", command=self._on_Button_1)
-        self._elem_1.place(x=100, y=100, width=100, height=34)
+---
 
-    def _on_Button_1(self, event=None):
-        """
-        Event handler for Button (ID: 1).
-        Triggered by: command
-        Access widget instance via: self._elem_1
-        """
-        print("Button clicked!")
+## 📁 File Format (`.tvd`)
 
-if __name__ == '__main__':
-    root = tk.Tk()
-    app = MainApplication(root)
-    root.mainloop()
+Designs are saved as JSON files with the following structure:
 
+```json
+{
+  "elements": [...],
+  "next_id": 42,
+  "reusable_ids": [...],
+  "window_title": "My Application",
+  "canvas_w": 800,
+  "canvas_h": 600,
+  "canvas_bg": "#FFFFFF",
+  "canvas_imports": "import tkinter as tk\nfrom tkinter import ttk",
+  "full_code": "..."
+}
 ```
+
+Each element in the `"elements"` array stores its type, position, dimensions, properties, handler code, and parent relationships.
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Here are some areas that could use attention:
+
+- **Additional Widgets** – Support for more Tkinter/CustomTkinter widgets (e.g., `CTkSwitch`, `CTkOptionMenu`).
+- **Theme Support** – Toggle between light/dark modes for the builder itself.
+- **Grid Layout Manager** – Support for `grid()` and `pack()` in addition to `place()`.
+- **Improved Table Widget** – Full pandas DataFrame editing within the designer.
+- **Export to Multiple Frameworks** – Generate code for PyQt, wxPython, or Kivy.
+- **Translation/Localization** – Internationalize the UI strings.
+
+### Development Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/tkinter-visual-designer.git
+cd tkinter-visual-designer
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run in development mode
+python gui_builder.py
+```
+
+---
+
+## 📄 License
+
+This project is open‑source and available under the MIT License.
+
+---
+
+## 🙏 Acknowledgements
+
+- [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) – Modern, customizable widgets for Tkinter.
+- [Pillow](https://python-pillow.org/) – Python Imaging Library for image support.
+- [pandas](https://pandas.pydata.org/) – Data analysis library used for Table widget functionality.
+
+---
+
+## 📞 Support
+
+- **Issues**: Please report bugs and request features via the [GitHub Issues](https://github.com/yourusername/tkinter-visual-designer/issues) page.
+- **Discussions**: Join the conversation in the [GitHub Discussions](https://github.com/yourusername/tkinter-visual-designer/discussions) forum.
+
+---
+
+*Built with ❤️ for the Python community.*
