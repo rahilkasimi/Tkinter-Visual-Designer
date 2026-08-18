@@ -27,6 +27,8 @@ import ast
 import re
 import platform
 import shutil
+import threading
+import queue
 from dataclasses import dataclass, field
 from typing import Optional, List, Dict, Any, Tuple
 
@@ -102,8 +104,8 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "default_size": (120, 30),
         "defaults": {"text": "Label", "font": ("Segoe UI", 9), "fg": "#212121",
                       "bg": "#F5F5F5",
-                      "relief": "flat", "justify": "center",
-                      "corner_radius": ""},
+                      "justify": "center",
+                      "corner_radius": "", "border_width": ""},
         "tile_bg": "#E3F2FD", "tile_fg": "#1565C0",
         "category": "Input",
     },
@@ -113,9 +115,9 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "default_size": (160, 30),
         "defaults": {"textvariable": "", "show": "", "width": 20,
                       "font": ("Segoe UI", 9),
-                      "fg": "#212121", "bg": "white", "relief": "sunken",
+                      "fg": "#212121", "bg": "white",
                       "justify": "left", "default_value": "",
-                      "corner_radius": ""},
+                      "corner_radius": "", "border_width": ""},
         "tile_bg": "#FFFFFF", "tile_fg": "#212121",
         "category": "Input",
     },
@@ -125,8 +127,8 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "default_size": (100, 34),
         "defaults": {"text": "Button", "font": ("Segoe UI", 9, "bold"),
                       "fg": "#FFFFFF", "bg": "#1976D2",
-                      "relief": "flat", "command": "",
-                      "corner_radius": ""},
+                      "command": "",
+                      "corner_radius": "", "border_width": ""},
         "tile_bg": "#1976D2", "tile_fg": "#FFFFFF",
         "category": "Input",
     },
@@ -136,7 +138,7 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "default_size": (130, 30),
         "defaults": {"text": "Option", "variable": "", "value": 1,
                       "font": ("Segoe UI", 9),
-                      "fg": "#212121", "bg": "#F5F5F5", "relief": "flat",
+                      "fg": "#212121", "bg": "#F5F5F5",
                       "corner_radius": ""},
         "tile_bg": "#F3E5F5", "tile_fg": "#6A1B9A",
         "category": "Input",
@@ -148,7 +150,8 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "defaults": {"text": "Checkbox", "variable": "", "onvalue": 1,
                       "offvalue": 0,
                       "font": ("Segoe UI", 9), "fg": "#212121", "bg": "#F5F5F5",
-                      "default_value": 0, "corner_radius": ""},
+                      "default_value": 0, "corner_radius": "",
+                      "border_width": ""},
         "tile_bg": "#E8F5E9", "tile_fg": "#2E7D32",
         "category": "Input",
     },
@@ -161,7 +164,7 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
                       "tickinterval": 0, "resolution": 1,
                       "font": ("Segoe UI", 9),
                       "fg": "#212121", "bg": "#F5F5F5", "default_value": 0,
-                      "corner_radius": ""},
+                      "corner_radius": "", "border_width": ""},
         "tile_bg": "#FCE4EC", "tile_fg": "#AD1457",
         "category": "Input",
     },
@@ -172,7 +175,7 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "defaults": {"values": ["Option 1", "Option 2", "Option 3"],
                       "state": "readonly",
                       "font": ("Segoe UI", 9), "width": 18,
-                      "default_value": "", "corner_radius": ""},
+                      "default_value": "", "corner_radius": "", "border_width": ""},
         "tile_bg": "#FFF3E0", "tile_fg": "#E65100",
         "category": "Input",
     },
@@ -203,8 +206,8 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "widget": "tk.Text",
         "default_size": (200, 90),
         "defaults": {"height": 5, "width": 30, "font": ("Segoe UI", 9),
-                      "fg": "#212121", "bg": "white", "relief": "sunken",
-                      "wrap": "word", "corner_radius": ""},
+                      "fg": "#212121", "bg": "white",
+                      "wrap": "word", "corner_radius": "", "border_width": ""},
         "tile_bg": "#FFFDE7", "tile_fg": "#F57F17",
         "category": "Input",
     },
@@ -222,7 +225,7 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "widget": "ttk.Progressbar",
         "default_size": (180, 30),
         "defaults": {"maximum": 100, "value": 40, "orient": "horizontal",
-                      "length": 180, "corner_radius": ""},
+                      "length": 180, "corner_radius": "", "border_width": ""},
         "tile_bg": "#E8F5E9", "tile_fg": "#1B5E20",
         "category": "Input",
     },
@@ -238,7 +241,7 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "display": "🖼️ Frame (Container)",
         "widget": "tk.Frame",
         "default_size": (200, 120),
-        "defaults": {"relief": "groove", "bd": 2, "bg": "#F5F5F5",
+        "defaults": {"bd": 2, "bg": "#F5F5F5",
                       "corner_radius": ""},
         "tile_bg": "#ECEFF1", "tile_fg": "#263238",
         "category": "Containers",
@@ -247,7 +250,7 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "display": "🗂️ LabelFrame",
         "widget": "tk.LabelFrame",
         "default_size": (200, 120),
-        "defaults": {"text": "LabelFrame", "relief": "groove", "bd": 2,
+        "defaults": {"text": "LabelFrame", "bd": 2,
                       "bg": "#F5F5F5", "font": ("Segoe UI", 9),
                       "corner_radius": ""},
         "tile_bg": "#E0F2F1", "tile_fg": "#004D40",
@@ -258,7 +261,7 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "widget": "ttk.Notebook",
         "default_size": (260, 160),
         "defaults": {"tabs": ["Tab 1", "Tab 2"], "active_tab": 0,
-                      "corner_radius": ""},
+                      "corner_radius": "", "border_width": ""},
         "tile_bg": "#EDE7F6", "tile_fg": "#311B92",
         "category": "Containers",
     },
@@ -292,7 +295,7 @@ ELEMENT_TYPES: Dict[str, Dict[str, Any]] = {
         "widget": "tk.Label",
         "default_size": (140, 100),
         "defaults": {"text": "Image", "tooltip": "", "image_path": "",
-                      "corner_radius": ""},
+                      "corner_radius": "", "border_width": ""},
         "tile_bg": "#ECEFF1", "tile_fg": "#455A64",
         "category": "Display",
     },
@@ -304,37 +307,32 @@ PROPERTY_FIELDS: Dict[str, List[Tuple]] = {
     "Label": [
         ("text", "Text", "entry"), ("font", "Font", "font"),
         ("fg", "Foreground", "color"), ("bg", "Background", "color"),
-        ("relief", "Relief", "combobox",
-         ["flat", "raised", "sunken", "groove", "ridge"]),
         ("justify", "Justify", "combobox", ["left", "center", "right"]),
         ("corner_radius", "Corner Radius", "entry"),
+        ("border_width", "Border Width", "entry"),
     ],
     "Entry": [
         ("textvariable", "Variable", "entry"),
         ("show", "Password char", "entry"), ("width", "Width", "entry"),
         ("font", "Font", "font"), ("fg", "Foreground", "color"),
         ("bg", "Background", "color"),
-        ("relief", "Relief", "combobox",
-         ["flat", "raised", "sunken", "groove", "ridge"]),
         ("justify", "Justify", "combobox", ["left", "center", "right"]),
         ("default_value", "Default Value", "entry"),
         ("corner_radius", "Corner Radius", "entry"),
+        ("border_width", "Border Width", "entry"),
     ],
     "Button": [
         ("text", "Text", "entry"), ("font", "Font", "font"),
         ("fg", "Foreground", "color"), ("bg", "Background", "color"),
-        ("relief", "Relief", "combobox",
-         ["flat", "raised", "sunken", "groove", "ridge"]),
         ("command", "Command", "text"),
         ("corner_radius", "Corner Radius", "entry"),
+        ("border_width", "Border Width", "entry"),
     ],
     "Radiobutton": [
         ("text", "Text", "entry"), ("variable", "Variable", "entry"),
         ("value", "Value", "entry"),
         ("font", "Font", "font"), ("fg", "Foreground", "color"),
-        ("bg", "Background", "color"), ("relief", "Relief", "combobox",
-                                        ["flat", "raised", "sunken", "groove",
-                                         "ridge"]),
+        ("bg", "Background", "color"),
         ("corner_radius", "Corner Radius", "entry"),
     ],
     "Checkbutton": [
@@ -344,6 +342,7 @@ PROPERTY_FIELDS: Dict[str, List[Tuple]] = {
         ("bg", "Background", "color"),
         ("default_value", "Default Value", "entry"),
         ("corner_radius", "Corner Radius", "entry"),
+        ("border_width", "Border Width", "entry"),
     ],
     "Scale": [
         ("from_", "From", "entry"), ("to", "To", "entry"),
@@ -355,6 +354,7 @@ PROPERTY_FIELDS: Dict[str, List[Tuple]] = {
         ("bg", "Background", "color"),
         ("default_value", "Default Value", "entry"),
         ("corner_radius", "Corner Radius", "entry"),
+        ("border_width", "Border Width", "entry"),
     ],
     "Listbox": [
         ("listvariable", "Variable", "entry"),
@@ -371,21 +371,16 @@ PROPERTY_FIELDS: Dict[str, List[Tuple]] = {
         ("height", "Height (rows)", "entry"),
         ("width", "Width (chars)", "entry"), ("font", "Font", "font"),
         ("fg", "Foreground", "color"), ("bg", "Background", "color"),
-        ("relief", "Relief", "combobox",
-         ["flat", "raised", "sunken", "groove", "ridge"]),
         ("wrap", "Wrap", "combobox", ["none", "char", "word"]),
         ("corner_radius", "Corner Radius", "entry"),
+        ("border_width", "Border Width", "entry"),
     ],
     "Frame": [
-        ("relief", "Relief", "combobox",
-         ["flat", "raised", "sunken", "groove", "ridge"]),
         ("bd", "Border width", "entry"), ("bg", "Background", "color"),
         ("corner_radius", "Corner Radius", "entry"),
     ],
     "LabelFrame": [
         ("text", "Text", "entry"), ("font", "Font", "font"),
-        ("relief", "Relief", "combobox",
-         ["flat", "raised", "sunken", "groove", "ridge"]),
         ("bd", "Border width", "entry"), ("bg", "Background", "color"),
         ("corner_radius", "Corner Radius", "entry"),
     ],
@@ -393,6 +388,7 @@ PROPERTY_FIELDS: Dict[str, List[Tuple]] = {
         ("tabs", "Tabs", "entry"),
         ("active_tab", "Active Tab", "combobox", []),
         ("corner_radius", "Corner Radius", "entry"),
+        ("border_width", "Border Width", "entry"),
     ],
     "PanedWindow": [
         ("orient", "Orientation", "combobox", ["horizontal", "vertical"]),
@@ -422,6 +418,7 @@ PROPERTY_FIELDS: Dict[str, List[Tuple]] = {
         ("font", "Font", "font"), ("width", "Width (chars)", "entry"),
         ("default_value", "Default Value", "entry"),
         ("corner_radius", "Corner Radius", "entry"),
+        ("border_width", "Border Width", "entry"),
     ],
     "Spinbox": [
         ("from_", "From", "entry"), ("to", "To", "entry"),
@@ -437,6 +434,7 @@ PROPERTY_FIELDS: Dict[str, List[Tuple]] = {
         ("orient", "Orientation", "combobox", ["horizontal", "vertical"]),
         ("length", "Length", "entry"),
         ("corner_radius", "Corner Radius", "entry"),
+        ("border_width", "Border Width", "entry"),
     ],
     "Table": [
         ("file", "Excel/CSV File", "file"),
@@ -449,6 +447,7 @@ PROPERTY_FIELDS: Dict[str, List[Tuple]] = {
         ("image_path", "Image File", "image_file"),  # custom file picker
         ("tooltip", "Tooltip", "entry"),
         ("corner_radius", "Corner Radius", "entry"),
+        ("border_width", "Border Width", "entry"),
     ],
 }
 
@@ -506,6 +505,7 @@ CTK_PROP_MAP = {
     "fg": "text_color",
     "relief": None,   # CTk widgets don't use relief; we can drop or use border_width
     "bd": "border_width",
+    "border_width": "border_width",
     "width": None,    # we handle separately via canvas_w
     "height": None,   # we handle separately via canvas_h
     "font": "font",
@@ -704,11 +704,14 @@ class CodeGenerator:
     @staticmethod
     def generate(
             elements: List[DesignElement], window_title: str,
-            window_size: Tuple[int, int], canvas_bg: str, canvas_imports: str
+            window_size: Tuple[int, int], canvas_bg: str, canvas_imports: str,
+            custom_module_code: str = "", custom_class_code: str = ""
             ) -> str:
         if not elements:
             return CodeGenerator._empty_template(window_title, window_size,
-                                                  canvas_bg, canvas_imports)
+                                                  canvas_bg, canvas_imports,
+                                                  custom_module_code,
+                                                  custom_class_code)
 
         has_table = any(e.elem_type == "Table" for e in elements)
         if has_table and "import pandas as pd" not in canvas_imports:
@@ -829,6 +832,18 @@ class CodeGenerator:
                     if v not in (None, ""):
                         try:
                             prop_strs.append(f"corner_radius={int(v)}")
+                        except (TypeError, ValueError):
+                            pass
+                    continue
+                elif k in ("border_width", "bd"):
+                    # Both keys resolve to the same CTk kwarg (see
+                    # CTK_PROP_MAP). Values coming from a property-panel
+                    # Entry field are always strings, but CTk widgets need
+                    # an int here -- passed through as a string this
+                    # crashes the generated app at runtime.
+                    if v not in (None, ""):
+                        try:
+                            prop_strs.append(f"{target_k}={int(v)}")
                         except (TypeError, ValueError):
                             pass
                     continue
@@ -1049,12 +1064,25 @@ class CodeGenerator:
         has_tooltips = any(e.props.get("tooltip") for e in elements)
         helper_block = [TOOLTIP_HELPER_CODE, ""] if has_tooltips else []
 
+        # Any code the user typed into the code editor that wasn't part of
+        # the recognized boilerplate/handler regions -- module-level
+        # constants, dicts, extra imports, standalone functions, or extra
+        # methods appended to the class -- gets captured separately (see
+        # _extract_custom_regions) specifically so a later full regenerate
+        # (adding an element, undo/redo, etc.) doesn't silently wipe it.
+        module_block = ([custom_module_code.rstrip("\n"), ""]
+                         if custom_module_code.strip() else [])
+        if custom_class_code.strip():
+            class_body.append("")
+            class_body.extend(custom_class_code.rstrip("\n").splitlines())
+
         return "\n".join([
             '"""Generated by Tkinter Visual Designer."""', "",
             canvas_imports, "",
             'ctk.set_appearance_mode("light")  # force light theme regardless of OS setting',
             'ctk.set_default_color_theme("blue")', "",
             *helper_block,
+            *module_block,
             "class MainApplication:", *class_body, *main_guard,
         ]
         )
@@ -1062,17 +1090,37 @@ class CodeGenerator:
     @staticmethod
     def _empty_template(
             window_title: str, window_size: Tuple[int, int], canvas_bg: str,
-            canvas_imports: str
+            canvas_imports: str, custom_module_code: str = "",
+            custom_class_code: str = ""
             ) -> str:
         if "import customtkinter as ctk" not in canvas_imports:
             canvas_imports = canvas_imports.rstrip() + "\nimport customtkinter as ctk"
+        # No elements means no class scaffold to attach custom_class_code
+        # to as real methods here -- keep it as preserved text rather than
+        # dropping it, so it round-trips back into class_body correctly
+        # once the design has elements again.
+        # No elements means no class scaffold to attach custom_class_code
+        # to as real methods here -- keep it as preserved text rather than
+        # dropping it, so it round-trips back into class_body correctly
+        # once the design has elements again. Dedent it first since it was
+        # captured at class-method indentation (4 spaces); left as-is it
+        # would be a syntax error sitting at module level here.
+        dedented_class_code = "\n".join(
+            line[4:] if line.startswith("    ") else line
+            for line in custom_class_code.splitlines()
+            )
+        custom_bits = "\n\n".join(
+            c.strip("\n") for c in (custom_module_code, dedented_class_code)
+            if c.strip()
+            )
+        custom_block = f"\n{custom_bits}\n" if custom_bits else ""
         return f'''"""Generated by Tkinter Visual Designer."""
 
 {canvas_imports}
 
 ctk.set_appearance_mode("light")  # force light theme regardless of OS setting
 ctk.set_default_color_theme("blue")
-
+{custom_block}
 
 def main():
     root = ctk.CTk()
@@ -1162,6 +1210,13 @@ if __name__ == "__main__":
                 if v not in (None, ""):
                     try:
                         prop_strs.append(f"corner_radius={int(v)}")
+                    except (TypeError, ValueError):
+                        pass
+                continue
+            elif k in ("border_width", "bd"):
+                if v not in (None, ""):
+                    try:
+                        prop_strs.append(f"{ctk_k}={int(v)}")
                     except (TypeError, ValueError):
                         pass
                 continue
@@ -1956,6 +2011,14 @@ class GUIBuilderApp:
         self._is_modified = False
         self.full_code: Optional[str] = None
         self._current_code: str = ""
+        # Custom code the user typed into the code editor outside any
+        # recognized boilerplate/handler region (constants, dicts, extra
+        # imports, standalone functions, extra class methods). Kept
+        # separately from self.full_code so a later full regenerate doesn't
+        # silently drop it -- see CodeGenerator.generate() and
+        # _extract_custom_regions().
+        self.custom_module_code: str = ""
+        self.custom_class_code: str = ""
 
         self._update_window_title_display()
         self.root.geometry("1400x800")
@@ -2784,7 +2847,8 @@ class GUIBuilderApp:
     def _regenerate_full_code(self):
         self.full_code = CodeGenerator.generate(
             self.elements, self.window_title, (self.CANVAS_W, self.CANVAS_H),
-            self.CANVAS_BG, self.canvas_imports
+            self.CANVAS_BG, self.canvas_imports,
+            self.custom_module_code, self.custom_class_code
         )
         self._current_code = self.full_code
         self._update_code_display()
@@ -2838,7 +2902,9 @@ class GUIBuilderApp:
             "canvas_h": self.CANVAS_H,
             "canvas_bg": self.CANVAS_BG,
             "canvas_imports": self.canvas_imports,
-            "full_code": self.full_code
+            "full_code": self.full_code,
+            "custom_module_code": self.custom_module_code,
+            "custom_class_code": self.custom_class_code,
         }
         state_str = json.dumps(state)
         if not self.undo_stack or self.undo_stack[-1] != state_str:
@@ -2867,6 +2933,8 @@ class GUIBuilderApp:
         self.canvas_imports = data.get("canvas_imports",
                                         "import tkinter as tk\nfrom tkinter import ttk")
         self.full_code = data.get("full_code")
+        self.custom_module_code = data.get("custom_module_code", "")
+        self.custom_class_code = data.get("custom_class_code", "")
 
         self.canvas.config(width=self.CANVAS_W, height=self.CANVAS_H,
                             bg=self.CANVAS_BG,
@@ -2931,22 +2999,17 @@ class GUIBuilderApp:
             seen.add(current.elem_id)
         return True
 
-    def _visible_elements(self) -> List[DesignElement]:
-        return [e for e in self.elements if self._is_element_visible(e)]
-
-    def _redraw_all_elements(self):
-        for e in self.elements:
-            self.renderer.erase_element(e)
-        for e in self._visible_elements():
-            self.renderer.draw_element(e)
-        self._reorder_elements()
-
-    def _reorder_elements(self):
-        self.canvas.tag_lower("grid")
-        visible = self._visible_elements()
-
-        # Memoized depth-of-nesting lookup (was an O(n^2) fixed-point loop
-        # over the full element list; now O(n) using the parent index).
+    def _compute_depths(self) -> Dict[int, int]:
+        """Nesting depth (0 = top-level) for every element, via the parent
+        index. Used both to set canvas z-order (deeper = raised later = on
+        top) and to hit-test clicks in that same order, so a click always
+        resolves to the innermost/topmost thing under the cursor -- not to
+        whichever element happens to sit earlier in self.elements. An
+        element's position in self.elements reflects when it was created,
+        not its current nesting, so list order and stacking order can and
+        do diverge (e.g. an element created before a container that's
+        later dragged inside it).
+        """
         depths: Dict[int, int] = {}
 
         def depth_of(e: DesignElement, visiting: set) -> int:
@@ -2967,7 +3030,22 @@ class GUIBuilderApp:
 
         for e in self.elements:
             depth_of(e, set())
+        return depths
 
+    def _visible_elements(self) -> List[DesignElement]:
+        return [e for e in self.elements if self._is_element_visible(e)]
+
+    def _redraw_all_elements(self):
+        for e in self.elements:
+            self.renderer.erase_element(e)
+        for e in self._visible_elements():
+            self.renderer.draw_element(e)
+        self._reorder_elements()
+
+    def _reorder_elements(self):
+        self.canvas.tag_lower("grid")
+        visible = self._visible_elements()
+        depths = self._compute_depths()
         sorted_elems = sorted(visible,
                                key=lambda e: depths.get(e.elem_id, 0)
                                )
@@ -3096,7 +3174,14 @@ class GUIBuilderApp:
 
         self.elem_origs = {e.elem_id: (e.x, e.y, e.canvas_w, e.canvas_h) for e in self.elements}
 
-        for candidate in reversed(self._visible_elements()):
+        # Same depth-ordered (topmost-first) iteration as _find_element_at,
+        # for the same reason: list order isn't stacking order once an
+        # element has been reparented into a container after creation.
+        depths = self._compute_depths()
+        ordered_candidates = sorted(self._visible_elements(),
+                                     key=lambda e: depths.get(e.elem_id, 0)
+                                     )
+        for candidate in reversed(ordered_candidates):
             tab_index = self._notebook_tab_at(candidate, x, y)
             if tab_index is not None:
                 self._set_notebook_active_tab(candidate, tab_index)
@@ -3145,7 +3230,18 @@ class GUIBuilderApp:
         self.canvas.focus_set()
 
     def _find_element_at(self, x: int, y: int) -> Optional[DesignElement]:
-        for elem in reversed(self._visible_elements()):
+        # Hit-test in actual rendered stacking order (deepest/topmost
+        # first) -- the same order _reorder_elements() uses to raise
+        # canvas items -- not self.elements list order. An element created
+        # before a container it's later dragged into keeps its earlier
+        # position in self.elements even though it now renders on top of
+        # that container; hit-testing by list order would make it match
+        # the container first and become permanently unclickable.
+        depths = self._compute_depths()
+        ordered = sorted(self._visible_elements(),
+                          key=lambda e: depths.get(e.elem_id, 0)
+                          )
+        for elem in reversed(ordered):
             if elem.contains_point(x, y):
                 return elem
         return None
@@ -3285,6 +3381,17 @@ class GUIBuilderApp:
                     # Track if parent changed
                     if old_parent != elem.parent_id:
                         parent_changed = True
+
+            if parent_changed:
+                # elem.parent_id changed above, but self._children_by_parent
+                # (used by drag-tagging, cascaded container moves, delete
+                # cascade, and notebook tab visibility) is only rebuilt on
+                # add/paste/delete/clear/load -- without this, a
+                # newly-reparented element wouldn't actually behave as part
+                # of its new container (e.g. moving the container wouldn't
+                # carry it along) until some unrelated action happened to
+                # trigger a rebuild.
+                self._rebuild_index()
 
             self._update_code_for_moved_elements()
             self._update_code()
@@ -4242,7 +4349,19 @@ class GUIBuilderApp:
             for child in self._children_by_parent.get(elem.elem_id, []):
                 if child.parent_tab is not None and child.parent_tab >= len(tabs):
                     child.parent_tab = len(tabs) - 1
-            self._show_properties(elem)
+            # Refresh just the active_tab dropdown's option count in place,
+            # rather than calling _show_properties(elem) here. A full
+            # property-panel rebuild destroys and recreates every row --
+            # including the very entry field the user is actively typing
+            # into -- which breaks keyboard focus after every single
+            # keystroke and makes renaming a tab effectively impossible
+            # (only the first character typed would ever register).
+            for r in self.prop_rows:
+                if r.get("field_key") == "active_tab" and r.get("_combo_widget") is not None:
+                    r["_combo_widget"].configure(
+                        values=[str(i + 1) for i in range(len(tabs))]
+                        )
+                    break
         elif elem.elem_type == "Notebook" and field_key == "active_tab":
             try:
                 idx = max(0, int(value) - 1)
@@ -4350,7 +4469,8 @@ class GUIBuilderApp:
             code = CodeGenerator.generate(
                 self.elements, self.window_title,
                 (self.CANVAS_W, self.CANVAS_H),
-                self.CANVAS_BG, self.canvas_imports
+                self.CANVAS_BG, self.canvas_imports,
+                self.custom_module_code, self.custom_class_code
             )
             self.full_code = code
         self._current_code = code
@@ -4463,11 +4583,15 @@ class GUIBuilderApp:
     def _run_preview(self):
         try:
             # Regenerate fresh from the current canvas state rather than
-            # trusting a possibly-stale self._current_code cache.
+            # trusting a possibly-stale self._current_code cache -- but
+            # still include any custom code the user added via the code
+            # editor (constants, helper functions, extra methods), or
+            # Run Preview would silently execute without it.
             code = CodeGenerator.generate(
                 self.elements, self.window_title,
                 (self.CANVAS_W, self.CANVAS_H),
-                self.CANVAS_BG, self.canvas_imports
+                self.CANVAS_BG, self.canvas_imports,
+                self.custom_module_code, self.custom_class_code
             )
         except Exception as e:
             messagebox.showerror("Run Preview Error",
@@ -4500,23 +4624,104 @@ class GUIBuilderApp:
             messagebox.showerror("Run Preview Error", str(e))
             return
 
-        # If the preview script crashes immediately (e.g. a bug in the
-        # generated code), Popen itself won't raise - the process just
-        # exits on its own. Poll shortly after launch so that failure is
-        # actually surfaced instead of silently doing nothing.
-        def _check_preview_alive():
-            ret = proc.poll()
-            if ret is not None and ret != 0:
-                try:
-                    _, stderr_out = proc.communicate(timeout=1)
-                except Exception:
-                    stderr_out = ""
-                messagebox.showerror(
-                    "Run Preview Error",
-                    f"Preview exited immediately (code {ret}).\n\n{stderr_out or 'No error output captured.'}"
-                )
+        # Watch the preview process for its entire lifetime rather than
+        # polling once at a fixed delay -- a one-shot poll can miss a crash
+        # that happens slightly later than expected (a slower machine, CTk
+        # theme loading, or an error only triggered once the user interacts
+        # with the preview), silently leaving the window looking like it
+        # "just closed" with no explanation.
+        #
+        # Tkinter/Tcl calls are only safe from the main thread, so the
+        # background thread here does nothing but block on
+        # proc.communicate() and push the result into a thread-safe queue;
+        # the actual GUI update happens from _poll_preview_result, which is
+        # scheduled via self.root.after() from the main thread only (never
+        # called directly from the background thread).
+        result_q: "queue.Queue" = queue.Queue()
 
-        self.root.after(800, _check_preview_alive)
+        def _watch_preview():
+            try:
+                _, stderr_out = proc.communicate()
+            except Exception:
+                stderr_out = ""
+            result_q.put((proc.returncode, stderr_out))
+
+        threading.Thread(target=_watch_preview, daemon=True).start()
+        self.root.after(200, lambda: self._poll_preview_result(result_q))
+
+    def _poll_preview_result(self, result_q: "queue.Queue"):
+        try:
+            ret, stderr_out = result_q.get_nowait()
+        except queue.Empty:
+            self.root.after(200, lambda: self._poll_preview_result(result_q))
+            return
+        if ret is not None and ret != 0:
+            self._show_preview_error(ret, stderr_out)
+
+    def _show_preview_error(self, ret: int, stderr_out: str):
+        messagebox.showerror(
+            "Run Preview Error",
+            f"The preview exited with an error (code {ret}).\n\n"
+            f"{stderr_out.strip() or 'No error output captured.'}"
+            )
+
+    def _extract_custom_regions(self, lines: List[str]) -> Tuple[str, str]:
+        """Pull out code the user typed into the code editor that isn't
+        part of the recognized boilerplate: module-level code between the
+        theme setup and the class (constants, dicts, extra imports,
+        standalone functions), and any class method whose name doesn't
+        match __init__ or _on_<ElemType>_<id> (extra helper methods).
+        Stored separately in self.custom_module_code/custom_class_code so
+        a later full regenerate (adding an element, undo/redo, etc.)
+        doesn't silently discard it -- see CodeGenerator.generate().
+        """
+        module_code = ""
+        class_code = ""
+
+        class_idx = next(
+            (i for i, l in enumerate(lines)
+             if l.startswith("class MainApplication:")), None
+            )
+        theme_idx = next(
+            (i for i, l in enumerate(lines)
+             if l.startswith('ctk.set_default_color_theme(')), None
+            )
+        if class_idx is not None and theme_idx is not None:
+            region = lines[theme_idx + 1:class_idx]
+            # Exclude the auto-managed tooltip helper class so it isn't
+            # captured as "custom" and then duplicated by generate().
+            tt_start = next(
+                (i for i, l in enumerate(region)
+                 if l.startswith("class _ToolTip:")), None
+                )
+            if tt_start is not None:
+                tt_end = tt_start + 1
+                while tt_end < len(region) and (
+                        region[tt_end].startswith((" ", "\t"))
+                        or not region[tt_end].strip()
+                        ):
+                    tt_end += 1
+                region = region[:tt_start] + region[tt_end:]
+            module_code = "\n".join(region).strip("\n")
+
+        main_guard_idx = next(
+            (i for i, l in enumerate(lines) if l.startswith("if __name__")),
+            len(lines)
+            )
+        if class_idx is not None:
+            class_region = lines[class_idx + 1:main_guard_idx]
+            recognized_re = re.compile(r'^    def (__init__|_on_\w+_\d+)\(')
+            def_starts = [i for i, l in enumerate(class_region)
+                          if l.startswith("    def ")]
+            custom_blocks = []
+            for idx, start in enumerate(def_starts):
+                end = (def_starts[idx + 1] if idx + 1 < len(def_starts)
+                       else len(class_region))
+                if not recognized_re.match(class_region[start]):
+                    custom_blocks.extend(class_region[start:end])
+            class_code = "\n".join(custom_blocks).rstrip("\n")
+
+        return module_code, class_code
 
     def _open_code_editor(self, elem: DesignElement):
         top = ctk.CTkToplevel(self.root)
@@ -4641,6 +4846,16 @@ class GUIBuilderApp:
                     self._update_status("Save cancelled due to syntax error.")
                     return
             edited_code = text_widget.get("1.0", "end-1c")
+            # Tabs mixed with spaces cause Python's TabError, and even when
+            # they don't, a Tk Text widget's own tab-stop rendering can make
+            # inconsistent indentation look fine on screen while the actual
+            # saved characters aren't. expandtabs() aligns to the nearest
+            # tab stop rather than naively swapping in a fixed count, so
+            # existing space indentation lines up correctly either way.
+            if "\t" in edited_code:
+                edited_code = edited_code.expandtabs(4)
+                text_widget.delete("1.0", tk.END)
+                text_widget.insert("1.0", edited_code)
             self.full_code = edited_code
             try:
                 lines = edited_code.splitlines()
@@ -4664,6 +4879,8 @@ class GUIBuilderApp:
                 elem.handler_code = "\n".join(cleaned).strip() or "pass"
             except (StopIteration, ValueError):
                 pass
+            self.custom_module_code, self.custom_class_code = \
+                self._extract_custom_regions(lines)
             self._update_code()
             self._save_state()
             self._update_status(
